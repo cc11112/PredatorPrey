@@ -10,17 +10,20 @@ object WorldActor extends Actor {
   def act() {
     Actor.loop {
       react {
-        case h: Hare => HandleHares(h)
-        case l: Lynx => HandleLynx(l)
-        case "hares" => println("Hares Population" + haresPopulation.count(e => true).toString())
-        case "lynx" => println("Lynx Population" + lynxPopulation.count(e => true).toString())
-        case ("whereishare", l: Lynx) => SearchHaresForLynx(l)
+        case h: Hare => handleHares(h)
+        case l: Lynx => handleLynx(l)
+        case "ticker" => simlulate()
+        case "output" => output()
+        case ("whereishare", l: Lynx) => searchHaresForLynx(l)
         case _ => exit()
       }
     }
   }
 
-  def HandleHares(hare: Hare) = {
+  /*
+   * to handle hare instance: new/destory
+   */
+  def handleHares(hare: Hare) = {
 
     if (hare.getDying()) {
       //remove from hares populations
@@ -32,7 +35,10 @@ object WorldActor extends Actor {
     }
   }
 
-  def HandleLynx(lynx: Lynx) = {
+  /*
+   * to handle lynx instance: new/destory
+   */
+  def handleLynx(lynx: Lynx) = {
 
     if (lynx.getDying()) {
       //remove from lynx populations
@@ -47,15 +53,35 @@ object WorldActor extends Actor {
   /*
    * search hares for lynx
    */
-  def SearchHaresForLynx(lynx: Lynx) = {
-    //TODO:
-    //search the first hare for lynx
+  def searchHaresForLynx(lynx: Lynx) = {
+    //TODO: search the first hare for lynx
     val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
-    
-    if (hare != null && hare != None && !hare.isEmpty) {
+    if (!hare.isEmpty) {
       haresPopulation -= hare.get
       lynx ! hare
     }
+  }
+
+  /*
+   * Ask Hares/Lynx every ticker
+   */
+  def simlulate() = {
+    for (hare <- haresPopulation) {
+      hare ! "run"
+      hare ! "alive"
+      hare ! "die"
+    }
+
+    for (lynx <- lynxPopulation) {
+      lynx ! "run"
+      lynx ! "alive"
+      lynx ! "die"
+    }
+  }
+
+  def output() = {
+    println("Hares Population" + haresPopulation.count(e => true).toString())
+    println("Lynx Population" + lynxPopulation.count(e => true).toString())
   }
 
   def main(args: Array[String]): Unit = {

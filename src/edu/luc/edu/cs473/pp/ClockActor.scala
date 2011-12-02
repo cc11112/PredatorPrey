@@ -30,10 +30,12 @@ object ClockActor extends Actor {
     //println("runing...")
     println(System.nanoTime.toString() + ": " ) 
 
-    WorldActor ! "hares" 
-    WorldActor ! "lynx"
+    WorldActor ! "ticker"
+    //output result
+    WorldActor ! "output" 
     
     Thread.sleep(1000)
+    
     ClockActor ! "ticker"
   }
 }
