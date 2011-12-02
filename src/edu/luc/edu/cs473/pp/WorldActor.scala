@@ -6,7 +6,7 @@ import scala.collection.mutable.ListBuffer
 object WorldActor extends Actor {
   private val haresPopulation = new ListBuffer[Hare]
   private val lynxPopulation = new ListBuffer[Lynx]
-
+  
   def act() {
     Actor.loop {
       react {
@@ -21,7 +21,7 @@ object WorldActor extends Actor {
   }
 
   /*
-   * to handle hare instance: new/destory
+   * to handle hare instance: new/destroy
    */
   def handleHares(hare: Hare) = {
 
@@ -36,7 +36,7 @@ object WorldActor extends Actor {
   }
 
   /*
-   * to handle lynx instance: new/destory
+   * to handle lynx instance: new/destroy
    */
   def handleLynx(lynx: Lynx) = {
 
@@ -83,14 +83,41 @@ object WorldActor extends Actor {
     println("Hares Population" + haresPopulation.count(e => true).toString())
     println("Lynx Population" + lynxPopulation.count(e => true).toString())
   }
-
+  
+  def initial(hares: Int, lynx: Int) = {
+    println("initial...")
+    
+    for(i <- (1 to hares)){
+      handleHares(new Hare(
+          (math.random * Configure.HareMaxAge).toInt,
+          Configure.HareMaxAge,
+          Configure.HareBirthRate,
+          WorldSpace.getRandomX(),
+          WorldSpace.getRandomY()
+          ))
+    }
+    
+    for(i <- (1 to lynx)){
+      handleLynx(new Lynx(
+          (math.random * Configure.LynxMaxAge).toInt,
+          Configure.LynxMaxAge,
+          (math.random * Configure.LynxMaxEnergy).toInt,
+          Configure.EnergyGainPreHare,
+          Configure.EnergyUseReproduce,
+          WorldSpace.getRandomX(),
+          WorldSpace.getRandomY()
+          ))
+    }
+  }
+  
+   
   def main(args: Array[String]): Unit = {
-
-    //TODO: configure
-
+    
+    initial(Configure.InitialHares, Configure.InitialLynx)
+    
     ClockActor.Start()
 
-    Thread.sleep(1000 * 10)
+    Thread.sleep(1000 * 100)
 
     ClockActor.Stop()
 

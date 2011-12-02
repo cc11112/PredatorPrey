@@ -1,7 +1,8 @@
 package edu.luc.edu.cs473.pp
 
-class WorldSpace(worldWidth: Int, worldheight:Int) {
-	
+object WorldSpace {
+  def getRandomX(): Int = (math.random * Configure.WorldWidth).toInt
+  def getRandomY(): Int = (math.random * Configure.WorldHeight).toInt
 }
 
 
