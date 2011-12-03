@@ -38,7 +38,11 @@ case class Hare(
   /*
    * mate Probability and birth rate
    */
-  def reproduceNumber(): Int = (math.random * 100).toInt % hareBirthRate + 1
+  def reproduceNumber(): Int = {
+	 val n : Int = (math.random * 100).toInt % hareBirthRate + 1
+	 println("reproduceNumber:" + n)
+	 n
+  }
 
   /*
    * Is this hare at this area
@@ -46,8 +50,8 @@ case class Hare(
   def isOnThisPot(x: Int, y: Int): Boolean = {
     //TODO:
     //search position
-    (x - 5 <= getX() && getX() <= x + 5
-      && y - 5 <= getY() && getY() <= y + 5)
+    (x - 10 <= getX() && getX() <= x + 10
+      && y - 10 <= getY() && getY() <= y + 10)
   }
 
   override def die() = {

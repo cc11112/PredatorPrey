@@ -57,6 +57,7 @@ object WorldActor extends Actor {
     //TODO: search the first hare for lynx
     val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
     if (!hare.isEmpty) {
+      println("lynx is catching a hare..." + lynx.hashCode().toString())
       haresPopulation -= hare.get
       lynx ! hare
     }
@@ -80,8 +81,8 @@ object WorldActor extends Actor {
   }
 
   def output() = {
-    println("Hares Population" + haresPopulation.count(e => true).toString())
-    println("Lynx Population" + lynxPopulation.count(e => true).toString())
+    println("Hares Population: " + haresPopulation.count(e => true).toString())
+    println("Lynx Population: " + lynxPopulation.count(e => true).toString())
   }
   
   def initial(hares: Int, lynx: Int) = {
@@ -108,6 +109,8 @@ object WorldActor extends Actor {
           WorldSpace.getRandomY()
           ))
     }
+    //start world actor
+    start()
   }
   
    
@@ -117,7 +120,7 @@ object WorldActor extends Actor {
     
     ClockActor.Start()
 
-    Thread.sleep(1000 * 100)
+    Thread.sleep(1000 * Configure.Runtime)
 
     ClockActor.Stop()
 

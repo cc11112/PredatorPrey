@@ -21,7 +21,7 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
   def die(): Unit = dying = true
   def getDying(): Boolean = dying
 
-  def canReproduce(): Boolean = math.random * 800 < 200
+  def canReproduce(): Boolean = math.random * 800 < 10
 
   def run() = {
     //TODO: Move randomly in the world.
