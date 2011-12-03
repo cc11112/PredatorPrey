@@ -1,4 +1,4 @@
-package edu.luc.edu.cs.cs473.pp
+package edu.luc.edu.cs473.pp
 
 class TestPredatorPreyAgent {
 

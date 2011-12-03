@@ -18,13 +18,32 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
 
   def getAge() = currentAge
   def setAge() = { currentAge = currentAge + 1 }
-  def die(): Unit = dying = true
+  def setDying(): Unit = dying = true
   def getDying(): Boolean = dying
 
-  def canReproduce(birthRate: Double): Boolean = 
+  def canReproduce(birthRate: Double): Boolean =
     math.random < birthRate && getAge() > 0
 
   def run() = {
     setXY(WorldSpace.getRandomX(), WorldSpace.getRandomY())
   }
+
+  /**
+   * quit this world
+   */
+  def quit() = {
+    setDying()
+    die()
+    exit()
+  }
+  
+  /**
+   * Check is it time to die
+   */
+  def isDying(): Unit
+  
+  /**
+   * die action
+   */
+  def die() = this ! None
 }

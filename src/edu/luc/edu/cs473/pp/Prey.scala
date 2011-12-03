@@ -20,12 +20,13 @@ case class Lynx(
         case "alive" => {
           run()
           consumeEnergy() 	//"set-energy"
+          isDying()
           tryToEat()		//search hare
           tryToMakeKitten()
           setAge()
-          die()
+          isDying()
         }
-        case "die" => die()
+        case "die" => quit()
         case h: Hare => eatHaresIfExists(h)
         case _ => exit()
       }
@@ -51,7 +52,7 @@ case class Lynx(
 
   def eatHaresIfExists(hare: Hare) = {
     if (!getDying()) {
-    	hare ! "die"  
+    	hare ! "die"            //kill this hare
     	addEnergy()
     }
   }
@@ -79,13 +80,13 @@ case class Lynx(
    */
   def canReproduce(): Boolean = 
     (currentEnergy > energyUse) && getAge() > 0 
-
-  override def die() = {
+  
+  override def die() = WorldActor ! this
+    
+  override def isDying() = {
     //println("Age: " +getAge() + " Energy: " + currentEnergy)
     if (getAge() > maxLifeSpan || currentEnergy < 0) {
-      super.die()
-      WorldActor ! this
-      exit()
+    	quit()
     }
   }
 }

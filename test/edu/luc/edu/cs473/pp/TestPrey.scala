@@ -1,4 +1,4 @@
-package edu.luc.edu.cs.cs473.pp
+package edu.luc.edu.cs473.pp
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

@@ -18,9 +18,9 @@ case class Hare(
           run()
           tryToMakeBunnies()
           setAge()
-          die()
+          isDying()
         }
-        case "die" => die()
+        case "die" => quit()
         case _ => exit()
       }
     }
@@ -40,19 +40,26 @@ case class Hare(
   /**
    * mate Probability
    */
-  def getReproduceNumber(): Int = (math.random * hareReproduce ).toInt
+  def getReproduceNumber(): Int = (math.random * hareReproduce).toInt
 
   /**
    * Is this hare at this area
    */
-  def isOnThisPot(x: Int, y: Int): Boolean = 
-	  WorldSpace.isInScope(x, y, getX(), getY())
+  def isOnThisPot(x: Int, y: Int): Boolean =
+    WorldSpace.isInScope(x, y, getX(), getY())
 
-  override def die() = {
+  /**
+   * is dying coming?
+   */
+
+  override def isDying() = {
     if (getAge() > maxLifeSpan) {
-      super.die()
-      WorldActor ! this
-      exit()
+      quit()
     }
   }
+
+  /**
+   * send notice to world
+   */
+  override def die() = WorldActor ! this
 }
