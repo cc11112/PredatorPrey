@@ -2,10 +2,17 @@ package edu.luc.edu.cs473.pp
 
 import scala.actors._
 
-case class Lynx(age: Int, maxLifeSpan: Int,
-  maximumEnergy: Int, energyGain: Int, energyUse: Int,
-  startX: Int, startY: Int)
+case class Lynx(
+  age: Int,				//initial age
+  maxLifeSpan: Int, 	//max-lynx-age
+  energy: Int, 			//initialize energy  
+  energyGain: Int,		//energy-per-hare-eaten
+  energyUse: Int, 		//lynx-energy-to-reproduce
+  startX: Int, startY: Int //initial lynx position
+  )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
+
+  private var currentEnergy: Int = energy
 
   def act() {
     Actor.loop {
@@ -13,7 +20,9 @@ case class Lynx(age: Int, maxLifeSpan: Int,
         case "run" => run()
         case "alive" => {
           consumeEnergy() //"set-energy"
-          tryToEat()
+          if (tryToEat()){
+            addEnergy()
+          }
           tryToMakeKittens()
           setAge()
         }
@@ -23,22 +32,55 @@ case class Lynx(age: Int, maxLifeSpan: Int,
     }
   }
 
-  def consumeEnergy() = setEnergy(getEnergy() - energyUse)
+  /*
+   * Consume energy
+   */
+  def consumeEnergy() = currentEnergy -= energyUse
+  
+  /*
+   * Gain energy from eat hare
+   */
+  def addEnergy() = currentEnergy += energyGain
 
-  def tryToEat() = {
+  def tryToEat() : Boolean = {
     //TODO:
-    //
+    //search hare from this spot
+    false
   }
 
+  /*
+   * Try to Make Kittens
+   */
   def tryToMakeKittens() = {
-    //TODO:
+    if (canReproduce()) {
+      //send world message to generate a new bunnies
+      for (i <- (1 to reproduceNumber()))
+        WorldActor !
+          new Lynx(0, maxLifeSpan,
+            currentEnergy / 2, // Kitten starts with 1/2 of the parents energy
+            energyGain, energyUse,
+            getX(), getY())
+    }
   }
 
-  override def canReproduce(): Boolean = getEnergy() > getEnergyUse()
+  /*
+   * mate Probability
+   */
+  def reproduceNumber(): Int = (math.random * 5).toInt % 3
+
+  /*
+   * to check energy is meet the require condition
+   */
+  override def canReproduce(): Boolean = {
+    (currentEnergy > energyUse) && (super.canReproduce())
+  }
 
   override def die() = {
-    if (getAge > maxLifeSpan || getEnergy() <= 0)
+    if (getAge > maxLifeSpan || currentEnergy <= 0){
+      WorldActor ! this
+      super.die()
       exit()
+    }
   }
 }
 

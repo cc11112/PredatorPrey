@@ -8,10 +8,6 @@ abstract class PredatorPreyAgent(age:Int, maxAge: Int, startX: Int, startY: Int)
   
   private var currentAge: Int = age
   private var dying: Boolean = false
-
-  private var energy: Int = 0
-  private var energyGain: Int = 0
-  private var energyUse: Int = 0
   
   private var sSpace: PredatorPreySpace = new PredatorPreySpace()
   def getX(): Int = x
@@ -20,13 +16,6 @@ abstract class PredatorPreyAgent(age:Int, maxAge: Int, startX: Int, startY: Int)
     x = newX
     y = newY
   }
-
-  def getEnergy(): Int = energy
-  def setEnergy(energy: Int) = this.energy = energy
-  def getEnergyGain(): Int = energyGain
-  def setEnergyGain(energyGain: Int) = this.energyGain = energyGain;
-  def getEnergyUse(): Int = energyUse
-  def setEnergyUse(energyUse: Int) = this.energyUse = energyUse
   
   def getAge() = currentAge
   def setAge() = { currentAge = currentAge + 1 }
@@ -34,7 +23,7 @@ abstract class PredatorPreyAgent(age:Int, maxAge: Int, startX: Int, startY: Int)
   def getDying(): Boolean = dying
   
   //TODO:
-  def canReproduce(): Boolean
+  def canReproduce(): Boolean =  math.random * 800 < 200
 
   def run() = {
     //TODO: Move randomly in the world.
