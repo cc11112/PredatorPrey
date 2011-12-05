@@ -20,13 +20,12 @@ case class Lynx(
         case "run" => run()
         case "alive" => {
           consumeEnergy() //"set-energy"
-          if (tryToEat()){
-            addEnergy()
-          }
+          tryToEat()
           tryToMakeKittens()
           setAge()
         }
         case "die" => die()
+        case h: Hare => eatHares(h)
         case _ => exit()
       }
     }
@@ -42,12 +41,18 @@ case class Lynx(
    */
   def addEnergy() = currentEnergy += energyGain
 
-  def tryToEat() : Boolean = {
-    //TODO:
-    //search hare from this spot
-    false
+  /*
+   * Try to catch hare
+   */
+  def tryToEat() = {
+    WorldActor ! ("whereishare", this)
   }
 
+  def eatHares(hare: Hare) = {
+    addEnergy()
+    hare ! None
+  }
+  
   /*
    * Try to Make Kittens
    */

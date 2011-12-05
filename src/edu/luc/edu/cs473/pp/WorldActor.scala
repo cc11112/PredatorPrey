@@ -13,7 +13,8 @@ object WorldActor extends Actor {
         case h: Hare => HandleHares(h)
         case l: Lynx => HandleLynx(l)
         case "hares" => println("Hares Population" + haresPopulation.count(e => true).toString())
-        case "lynx" =>  println("Lynx Population" + lynxPopulation.count(e => true).toString())
+        case "lynx" => println("Lynx Population" + lynxPopulation.count(e => true).toString())
+        case ("whereishare", l: Lynx) => SearchHaresForLynx(l)
         case _ => exit()
       }
     }
@@ -43,12 +44,26 @@ object WorldActor extends Actor {
     }
   }
 
+  /*
+   * search hares for lynx
+   */
+  def SearchHaresForLynx(lynx: Lynx) = {
+    //TODO:
+    //search the first hare for lynx
+    val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
+    
+    if (hare != null && hare != None && !hare.isEmpty) {
+      haresPopulation -= hare.get
+      lynx ! hare
+    }
+  }
+
   def main(args: Array[String]): Unit = {
 
     //TODO: configure
 
     ClockActor.Start()
-    
+
     Thread.sleep(1000 * 10)
 
     ClockActor.Stop()
