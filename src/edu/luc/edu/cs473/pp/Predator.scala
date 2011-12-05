@@ -1,9 +1,9 @@
 package edu.luc.edu.cs473.pp
 import scala.actors._
 
-case class Hare(maxLifeSpan: Int, hareBirthRate: Double, startX: Int, startY: Int)
-  extends PredatorPreyAgent(maxLifeSpan, startX, startY) {
-
+case class Hare(age: Int, maxLifeSpan: Int, hareBirthRate: Double, startX: Int, startY: Int)
+  extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
+  
   def act() {
     Actor.loop {
       react {
@@ -23,7 +23,7 @@ case class Hare(maxLifeSpan: Int, hareBirthRate: Double, startX: Int, startY: In
     if (canReproduce()) {
       //send world message to generate a new bunnies
       for (i <- (1 to reproduceNumber()))
-        WorldActor ! new Hare(maxLifeSpan, hareBirthRate, getX(), getY())
+        WorldActor ! new Hare(0, maxLifeSpan, hareBirthRate, getX(), getY())
     }
   }
 

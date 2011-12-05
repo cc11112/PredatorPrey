@@ -2,10 +2,10 @@ package edu.luc.edu.cs473.pp
 
 import scala.actors._
 
-case class Lynx(maxLifeSpan: Int,
+case class Lynx(age: Int, maxLifeSpan: Int,
   maximumEnergy: Int, energyGain: Int, energyUse: Int,
   startX: Int, startY: Int)
-  extends PredatorPreyAgent(maxLifeSpan, startX, startY) {
+  extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
 
   def act() {
     Actor.loop {
