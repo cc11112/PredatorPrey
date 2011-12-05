@@ -26,6 +26,7 @@ object WorldActor extends Actor {
       haresPopulation -= hare
     } else {
       //add to hares populations
+      hare.start
       haresPopulation += hare
     }
   }
@@ -37,6 +38,7 @@ object WorldActor extends Actor {
       lynxPopulation -= lynx
     } else {
       //add to lynx populations
+      lynx.start
       lynxPopulation += lynx
     }
   }

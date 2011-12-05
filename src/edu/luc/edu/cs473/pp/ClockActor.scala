@@ -23,10 +23,16 @@ object ClockActor extends Actor {
     println("stop")
   }
 
+  /*
+   * every ticker to print hares & lynx Population
+   */
   def Ticker() = {
-    println("runing...")
-    println(System.nanoTime.toString())
+    //println("runing...")
+    println(System.nanoTime.toString() + ": " ) 
 
+    WorldActor ! "hares" 
+    WorldActor ! "lynx"
+    
     Thread.sleep(1000)
     ClockActor ! "ticker"
   }
