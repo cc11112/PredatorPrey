@@ -2,17 +2,15 @@ package edu.luc.edu.cs473.pp
 
 import scala.actors._
 
-case class Lynx(minLifeSpan: Int,
-  maxLifeSpan: Int,
-  maximumEnergy: Int,
-  energyGain: Int,
-  energyUse: Int,
-  mateProbability: Double,
-  open: Int) extends PredatorPreyAgent(maxLifeSpan) {
+case class Lynx(maxLifeSpan: Int,
+  maximumEnergy: Int, energyGain: Int, energyUse: Int,
+  startX: Int, startY: Int)
+  extends PredatorPreyAgent(maxLifeSpan, startX, startY) {
 
   def act() {
     Actor.loop {
       react {
+        case "run" => run()
         case "alive" => {
           consumeEnergy() //"set-energy"
           tryToEat()
@@ -35,6 +33,8 @@ case class Lynx(minLifeSpan: Int,
   def tryToMakeKittens() = {
     //TODO:
   }
+
+  override def canReproduce(): Boolean = getEnergy() > getEnergyUse()
 
   override def die() = {
     if (getAge > maxLifeSpan || getEnergy() <= 0)

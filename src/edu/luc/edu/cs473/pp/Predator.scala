@@ -1,11 +1,13 @@
 package edu.luc.edu.cs473.pp
 import scala.actors._
 
-case class Hare(maxLifeSpan: Int) extends PredatorPreyAgent(maxLifeSpan) {
+case class Hare(maxLifeSpan: Int, hareBirthRate: Double, startX: Int, startY: Int)
+  extends PredatorPreyAgent(maxLifeSpan, startX, startY) {
 
   def act() {
     Actor.loop {
       react {
+        case "run" => run()
         case "alive" => {
           tryToMakeBunnies()
           setAge()
@@ -19,12 +21,22 @@ case class Hare(maxLifeSpan: Int) extends PredatorPreyAgent(maxLifeSpan) {
   def tryToMakeBunnies() = {
     //TODO:
     if (canReproduce()) {
-      new Hare(maxLifeSpan)
+      //send world message to generate a new bunnies
+      for (i <- (1 to reproduceNumber()))
+        WorldActor ! new Hare(maxLifeSpan, hareBirthRate, getX(), getY())
     }
   }
 
+  override def canReproduce(): Boolean =
+    math.random * 800 < 200
+
+  def reproduceNumber(): Int = (math.random * 10).toInt % 8 + 1
+
   override def die() = {
-    if (getAge > maxLifeSpan)
+    if (getAge > maxLifeSpan){
+      WorldActor ! this
+      super.die()
       exit()
+    }
   }
 }
