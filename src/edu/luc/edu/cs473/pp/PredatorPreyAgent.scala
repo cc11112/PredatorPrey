@@ -2,7 +2,7 @@ package edu.luc.edu.cs473.pp
 
 import scala.actors._
 
-abstract class PredatorPreyAgent extends Actor{
+abstract class PredatorPreyAgent(maxAge: Int) extends Actor{
 	private var x: Int = -1
 	private var y: Int = -1
 
@@ -35,12 +35,13 @@ abstract class PredatorPreyAgent extends Actor{
     def getMateProbability() : Double = mateProbability
     def setMateProbability(mateProbability: Double) = this.mateProbability = mateProbability
     
-	def maxAge() : Int
-	def die() ={
-      if ( age > maxAge() ||  energy <= 0 )
-    	  exit()
-	  }
-    
+    def getAge() = age 
+	def setAge() = { age = age + 1 }
+	def die() : Unit
+	
+	//TODO:
+    def canReproduce(): Boolean = getEnergy() > getEnergyUse()
+      
 	def reproduce () = {}
 	def run() = {}
 }
