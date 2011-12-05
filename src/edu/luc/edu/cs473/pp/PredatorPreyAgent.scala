@@ -9,7 +9,6 @@ abstract class PredatorPreyAgent(age:Int, maxAge: Int, startX: Int, startY: Int)
   private var currentAge: Int = age
   private var dying: Boolean = false
   
-  private var sSpace: PredatorPreySpace = new PredatorPreySpace()
   def getX(): Int = x
   def getY(): Int = y
   def setXY(newX: Int, newY: Int) = {
@@ -22,10 +21,15 @@ abstract class PredatorPreyAgent(age:Int, maxAge: Int, startX: Int, startY: Int)
   def die(): Unit = dying = true
   def getDying(): Boolean = dying
   
-  //TODO:
   def canReproduce(): Boolean =  math.random * 800 < 200
 
   def run() = {
     //TODO: Move randomly in the world.
+    
+    val newX:Int = (math.random * 11 % 7).toInt + x
+    
+    val newY:Int = (math.random * 13 % 11).toInt + y
+    
+    setXY(newX, newY)
   }
 }
