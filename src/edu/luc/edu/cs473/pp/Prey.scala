@@ -3,11 +3,11 @@ package edu.luc.edu.cs473.pp
 import scala.actors._
 
 case class Lynx(
-  age: Int,				//initial age
-  maxLifeSpan: Int, 	//max-lynx-age
-  energy: Int, 			//initialize energy  
-  energyGain: Int,		//energy-per-hare-eaten
-  energyUse: Int, 		//lynx-energy-to-reproduce
+  age: Int, //initial age
+  maxLifeSpan: Int, //max-lynx-age
+  energy: Int, //initialize energy  
+  energyGain: Int, //energy-per-hare-eaten
+  energyUse: Int, //lynx-energy-to-reproduce
   startX: Int, startY: Int //initial lynx position
   )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
@@ -17,12 +17,13 @@ case class Lynx(
   def act() {
     Actor.loop {
       react {
-        case "run" => run()
         case "alive" => {
+          run()
           consumeEnergy() //"set-energy"
           tryToEat()
           tryToMakeKittens()
           setAge()
+          die()
         }
         case "die" => die()
         case h: Hare => eatHares(h)
@@ -34,8 +35,8 @@ case class Lynx(
   /*
    * Consume energy
    */
-  def consumeEnergy() = currentEnergy -= energyUse
-  
+  def consumeEnergy() = currentEnergy -= 1
+
   /*
    * Gain energy from eat hare
    */
@@ -52,7 +53,7 @@ case class Lynx(
     addEnergy()
     hare ! None
   }
-  
+
   /*
    * Try to Make Kittens
    */
@@ -71,17 +72,17 @@ case class Lynx(
   /*
    * mate Probability
    */
-  def reproduceNumber(): Int = (math.random * 5).toInt % 3
+  def reproduceNumber(): Int = 1 //(math.random * 5).toInt % 3
 
   /*
    * to check energy is meet the require condition
    */
-  override def canReproduce(): Boolean = {
-    (currentEnergy > energyUse) && (super.canReproduce())
+  def canReproduce(): Boolean = {
+    (currentEnergy > energyUse) //&& (super.canReproduce(1))
   }
 
   override def die() = {
-    if (getAge > maxLifeSpan || currentEnergy <= 0){
+    if (getAge() >= maxLifeSpan || currentEnergy <= 0) {
       WorldActor ! this
       super.die()
       exit()

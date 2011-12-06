@@ -20,6 +20,7 @@ object ClockActor extends Actor {
 
   def Stop() = {
     ClockActor ! None
+    WorldActor ! None
     println("stop")
   }
 

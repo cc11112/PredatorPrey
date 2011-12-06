@@ -5,7 +5,7 @@ import scala.actors._
 case class Hare(
   age: Int, //initial age
   maxLifeSpan: Int, //max-hare-age 
-  hareBirthRate: Int, //hare-birth-rate 
+  hareBirthRate: Double, //hare-birth-rate 
   startX: Int, startY: Int //initial lynx position
   )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
@@ -13,10 +13,11 @@ case class Hare(
   def act() {
     Actor.loop {
       react {
-        case "run" => run()
         case "alive" => {
+          run()
           tryToMakeBunnies()
           setAge()
+          die()
         }
         case "die" => die()
         case _ => exit()
@@ -28,7 +29,7 @@ case class Hare(
    * Try to make Bunnies
    */
   def tryToMakeBunnies() = {
-    if (canReproduce()) {
+    if (canReproduce(hareBirthRate)) {
       //send world message to generate a new bunnies
       for (i <- (1 to reproduceNumber()))
         WorldActor ! new Hare(0, maxLifeSpan, hareBirthRate, getX(), getY())
@@ -36,11 +37,11 @@ case class Hare(
   }
 
   /*
-   * mate Probability and birth rate
+   * mate Probability 
    */
   def reproduceNumber(): Int = {
-	 val n : Int = (math.random * 100).toInt % hareBirthRate + 1
-	 println("reproduceNumber:" + n)
+	 val n : Int = 1//(math.random * 5).toInt % 5 + 1
+	 //println("reproduceNumber:" + n)
 	 n
   }
 
@@ -55,7 +56,7 @@ case class Hare(
   }
 
   override def die() = {
-    if (getAge > maxLifeSpan) {
+    if (getAge() >= maxLifeSpan) {
       WorldActor ! this
       super.die()
       exit()

@@ -56,6 +56,7 @@ object WorldActor extends Actor {
   def searchHaresForLynx(lynx: Lynx) = {
     //TODO: search the first hare for lynx
     val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
+    //.dropWhile(e => e.isOnThisPot(lynx.getX(), lynx.getY()))(0)
     if (!hare.isEmpty) {
       println("lynx is catching a hare..." + lynx.hashCode().toString())
       haresPopulation -= hare.get
@@ -68,15 +69,11 @@ object WorldActor extends Actor {
    */
   def simlulate() = {
     for (hare <- haresPopulation) {
-      hare ! "run"
       hare ! "alive"
-      hare ! "die"
     }
 
     for (lynx <- lynxPopulation) {
-      lynx ! "run"
       lynx ! "alive"
-      lynx ! "die"
     }
   }
 
