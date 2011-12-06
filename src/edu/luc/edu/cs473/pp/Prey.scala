@@ -33,17 +33,17 @@ case class Lynx(
     }
   }
 
-  /*
+  /**
    * Consume energy
    */
   def consumeEnergy() = currentEnergy -= 1
 
-  /*
+  /**
    * Gain energy from eat hare
    */
   def addEnergy() = currentEnergy += energyGain
 
-  /*
+  /**
    * Try to catch hare
    */
   def tryToEat() = {
@@ -57,13 +57,13 @@ case class Lynx(
     }
   }
 
-  /*
+  /**
    * Try to Make Kittens
    */
   def tryToMakeKittens() = {
     if (canReproduce()) {
       //send world message to generate a new Kittens
-     // currentEnergy -= energyUse
+      currentEnergy -= energyUse / 2
       for (i <- (1 to getReproduceNumber()))
         WorldActor !
           new Lynx(0, maxLifeSpan,
@@ -74,17 +74,15 @@ case class Lynx(
     }
   }
 
-  /*
+  /**
    * mate Probability
    */
   def getReproduceNumber(): Int = (math.random * (reproduceNum + 1)).toInt
 
-  /*
+  /**
    * to check energy is meet the require condition
    */
-  def canReproduce(): Boolean = {
-    (currentEnergy > energyUse) //&& (super.canReproduce(1))
-  }
+  def canReproduce(): Boolean = currentEnergy > energyUse
 
   override def die() = {
     //println("Age: " +getAge() + " Energy: " + currentEnergy)
