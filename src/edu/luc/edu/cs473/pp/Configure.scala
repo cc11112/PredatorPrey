@@ -5,15 +5,16 @@ object Configure {
   val WorldHeight: Int = 300
   val HareMaxAge: Int = 6
   val HareBirthRate: Double = 0.07
+  var HareReproduce: Int = 5
   val LynxMaxAge: Int = 10
   val LynxMaxEnergy: Int = 30
+  val lynxMaxReproduce: Int = 2
   val EnergyGainPreHare: Int = 3
   val EnergyUseReproduce: Int = 10
 
-  val InitialHares: Int = 10
-  val InitialLynx: Int = 2
+  val InitialHares: Int = 60
+  val InitialLynx: Int = 5
   
   val Runtime: Int = 100 
-  
   val DisplayMessage: Boolean = false
 }

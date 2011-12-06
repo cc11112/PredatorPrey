@@ -5,6 +5,7 @@ import scala.actors._
 case class Lynx(
   age: Int, //initial age
   maxLifeSpan: Int, //max-lynx-age
+  reproduceNum: Int, //every time reproduce number
   energy: Int, //initialize energy  
   energyGain: Int, //energy-per-hare-eaten
   energyUse: Int, //lynx-energy-to-reproduce
@@ -50,8 +51,10 @@ case class Lynx(
   }
 
   def eatHares(hare: Hare) = {
-    addEnergy()
-    hare ! None
+    if (!getDying()){
+	    addEnergy()
+	    hare ! None
+    }
   }
 
   /*
@@ -59,11 +62,13 @@ case class Lynx(
    */
   def tryToMakeKittens() = {
     if (canReproduce()) {
-      //send world message to generate a new bunnies
-      for (i <- (1 to reproduceNumber()))
+      //send world message to generate a new Kittens
+     // currentEnergy -= energyUse
+      for (i <- (1 to getReproduceNumber()))
         WorldActor !
           new Lynx(0, maxLifeSpan,
             currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
+            reproduceNum,
             energyGain, energyUse,
             getX(), getY())
     }
@@ -72,7 +77,7 @@ case class Lynx(
   /*
    * mate Probability
    */
-  def reproduceNumber(): Int = 1 //(math.random * 5).toInt % 3
+  def getReproduceNumber(): Int = (math.random * (reproduceNum + 1)).toInt
 
   /*
    * to check energy is meet the require condition
@@ -82,6 +87,7 @@ case class Lynx(
   }
 
   override def die() = {
+    //println("Age: " +getAge() + " Energy: " + currentEnergy)
     if (getAge() > maxLifeSpan || currentEnergy < 0) {
       super.die()
       WorldActor ! this
