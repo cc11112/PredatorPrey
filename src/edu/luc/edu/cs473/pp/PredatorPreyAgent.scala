@@ -24,7 +24,6 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
   def canReproduce(birthRate: Double): Boolean = math.random < birthRate
 
   def run() = {
-    //TODO: Move randomly in the world.
     setXY(WorldSpace.getRandomX(), WorldSpace.getRandomY())
   }
 }

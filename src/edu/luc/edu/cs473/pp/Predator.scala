@@ -25,7 +25,7 @@ case class Hare(
     }
   }
 
-  /*
+  /**
    * Try to make Bunnies
    */
   def tryToMakeBunnies() = {
@@ -36,29 +36,25 @@ case class Hare(
     }
   }
 
-  /*
+  /**
    * mate Probability 
    */
   def reproduceNumber(): Int = {
-	 val n : Int = 1//(math.random * 5).toInt % 5 + 1
-	 //println("reproduceNumber:" + n)
-	 n
+	 (math.random * 3).toInt 
   }
 
-  /*
+  /**
    * Is this hare at this area
    */
   def isOnThisPot(x: Int, y: Int): Boolean = {
-    //TODO:
-    //search position
-    (x - 10 <= getX() && getX() <= x + 10
-      && y - 10 <= getY() && getY() <= y + 10)
+    (x - 3 <= getX() && getX() <= x + 3
+      && y - 3 <= getY() && getY() <= y + 3)
   }
 
   override def die() = {
-    if (getAge() >= maxLifeSpan) {
-      WorldActor ! this
+    if (getAge() > maxLifeSpan) {
       super.die()
+      WorldActor ! this
       exit()
     }
   }

@@ -12,31 +12,35 @@ object ClockActor extends Actor {
     }
   }
 
+  /**
+   * start clock
+   */
   def Start() = {
     println("start...")
     ClockActor.start
     ClockActor ! "ticker"
   }
 
+  /**
+   * stop clock
+   */
   def Stop() = {
     ClockActor ! None
     WorldActor ! None
     println("stop")
   }
 
-  /*
-   * every ticker to print hares & lynx Population
+  /**
+   * every ticker to send world ticker message
    */
   def Ticker() = {
     //println("runing...")
-    println(System.nanoTime.toString() + ": " ) 
+    println(System.nanoTime.toString() + ": ")
 
     WorldActor ! "ticker"
-    //output result
-    WorldActor ! "output" 
-    
+
     Thread.sleep(1000)
-    
+
     ClockActor ! "ticker"
   }
 }

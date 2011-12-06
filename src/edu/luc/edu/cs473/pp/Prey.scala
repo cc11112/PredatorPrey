@@ -63,7 +63,7 @@ case class Lynx(
       for (i <- (1 to reproduceNumber()))
         WorldActor !
           new Lynx(0, maxLifeSpan,
-            currentEnergy / 2, // Kitten starts with 1/2 of the parents energy
+            currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
             energyGain, energyUse,
             getX(), getY())
     }
@@ -82,9 +82,9 @@ case class Lynx(
   }
 
   override def die() = {
-    if (getAge() >= maxLifeSpan || currentEnergy <= 0) {
-      WorldActor ! this
+    if (getAge() > maxLifeSpan || currentEnergy < 0) {
       super.die()
+      WorldActor ! this
       exit()
     }
   }
