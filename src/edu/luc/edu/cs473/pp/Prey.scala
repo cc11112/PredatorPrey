@@ -20,6 +20,7 @@ case class Lynx(
         case "alive" => {
           run()
           consumeEnergy() 	//"set-energy"
+          die()
           tryToEat()		//search hare
           tryToMakeKitten()
           setAge()
@@ -50,9 +51,9 @@ case class Lynx(
   }
 
   def eatHaresIfExists(hare: Hare) = {
-    if (!getDying() && !hare.getDying()) {
-	    addEnergy()
-	    hare ! "die"
+    if (!getDying()) {
+    	hare ! "die"  
+    	addEnergy()
     }
   }
 
@@ -65,12 +66,12 @@ case class Lynx(
       //send world message to generate a new Kittens
       WorldActor !
         new Lynx(0, maxLifeSpan,
-          currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
+          currentEnergy / 2, // Kitten starts with 1/2 of the parents energy
           energyGain, energyUse,
           getX(), getY())
 
       //reduce current energy
-      currentEnergy -= energyUse / 2
+      currentEnergy /= 2
     }
   }
   

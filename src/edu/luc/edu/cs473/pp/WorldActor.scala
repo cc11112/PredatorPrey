@@ -31,8 +31,9 @@ object WorldActor extends Actor {
     } else {
       displayMessage("hare: " + hare.hashCode() + " bron.")
       //add to hares populations
-      hare.start
       haresPopulation += hare
+      hare.start()
+      
     }
   }
 
@@ -48,8 +49,8 @@ object WorldActor extends Actor {
     } else {
       //add to lynx populations
       displayMessage("lynx: " + lynx.hashCode() + " bron.")
-      lynx.start
       lynxPopulation += lynx
+      lynx.start()
     }
   }
 
@@ -63,7 +64,7 @@ object WorldActor extends Actor {
     if (!hare.isEmpty && !lynx.getDying()) {
       displayMessage("lynx" + lynx.hashCode() + " is catching a hare: " + hare.hashCode())
       haresPopulation -= hare.get
-      lynx ! hare
+      lynx ! hare.get
     }
   }
 
