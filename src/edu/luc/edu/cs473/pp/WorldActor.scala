@@ -79,22 +79,32 @@ object WorldActor extends Actor {
       lynx ! "alive"
     }
 
-    val h: Int = haresPopulation.count(e => !e.getDying())
-    var l: Int = lynxPopulation.count(e => !e.getDying())
+    val h: Int = getHaresCount()
+    var l: Int = getLynxCount()
+    
     println("====Hares Population: " + h.toString())
     println("====Lynx Population: " + l.toString())
-    
-    if (h ==0 && l == 0) {
+
+    if (h == 0 && l == 0) {
       ClockActor ! "stop"
       System.exit(0)
     }
   }
-  
-  def displayMessage(s:String) = {
-    if(Configure.DisplayMessage)
+
+  /**
+   * get total hares number, not including dying hares
+   */
+  def getHaresCount(): Int = haresPopulation.count(e => !e.getDying())
+
+  /**
+   * get total lynx number, not including dying lynx
+   */
+  def getLynxCount(): Int = lynxPopulation.count(e => !e.getDying())
+
+  def displayMessage(s: String) = {
+    if (Configure.DisplayMessage)
       println(s)
   }
-     
 
   /**
    * initial world actor
@@ -124,7 +134,7 @@ object WorldActor extends Actor {
         WorldSpace.getRandomX(),
         WorldSpace.getRandomY()))
     }
-    
+
     //start world actor
     start()
   }
