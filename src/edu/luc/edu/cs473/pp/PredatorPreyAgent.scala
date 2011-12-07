@@ -17,7 +17,7 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
   }
 
   def getAge() = currentAge
-  def setAge() = { currentAge = currentAge + 1 }
+  def setAge() = currentAge += 1
   def setDying(): Unit = dying = true
   def getDying(): Boolean = dying
 

@@ -34,6 +34,11 @@ case class Lynx(
   }
 
   /**
+   * return current Energy
+   */
+  def getEnergy(): Int = currentEnergy
+  
+  /**
    * Consume energy
    */
   def consumeEnergy() = currentEnergy -= 1
