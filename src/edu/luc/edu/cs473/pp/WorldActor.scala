@@ -159,6 +159,8 @@ object WorldActor extends Actor {
 
     ClockActor ! "stop"
 
+    println("stop")
+    
     System.exit(0)
   }
 }

@@ -20,7 +20,6 @@ case class Lynx(
         case "alive" => {
           run()
           consumeEnergy() //"set-energy"
-          isDying()
           tryToEat() //search hare
           tryToMakeKitten()
           setAge()
