@@ -59,7 +59,7 @@ object WorldActor extends Actor {
   def searchHaresForLynx(lynx: Lynx) = {
     //TODO: search the first hare for lynx
     val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
-    //.dropWhile(e => e.isOnThisPot(lynx.getX(), lynx.getY()))(0)
+
     if (!hare.isEmpty && !lynx.getDying()) {
       displayMessage("lynx" + lynx.hashCode() + " is catching a hare: " + hare.hashCode())
       haresPopulation -= hare.get
@@ -111,7 +111,6 @@ object WorldActor extends Actor {
       handleLynx(new Lynx(
         (math.random * Configure.LynxMaxAge).toInt,
         Configure.LynxMaxAge,
-        Configure.lynxMaxReproduce,
         (math.random * Configure.LynxMaxEnergy).toInt + 1,
         Configure.EnergyGainPreHare,
         Configure.EnergyUseReproduce,

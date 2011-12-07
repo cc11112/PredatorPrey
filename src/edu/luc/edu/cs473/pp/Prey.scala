@@ -5,7 +5,6 @@ import scala.actors._
 case class Lynx(
   age: Int, //initial age
   maxLifeSpan: Int, //max-lynx-age
-  reproduceNum: Int, //every time reproduce number
   energy: Int, //initialize energy  
   energyGain: Int, //energy-per-hare-eaten
   energyUse: Int, //lynx-energy-to-reproduce
@@ -20,14 +19,14 @@ case class Lynx(
       react {
         case "alive" => {
           run()
-          consumeEnergy() //"set-energy"
-          tryToEat()
-          tryToMakeKittens()
+          consumeEnergy() 	//"set-energy"
+          tryToEat()		//search hare
+          tryToMakeKitten()
           setAge()
           die()
         }
         case "die" => die()
-        case h: Hare => eatHares(h)
+        case h: Hare => eatHaresIfExists(h)
         case _ => exit()
       }
     }
@@ -50,39 +49,36 @@ case class Lynx(
     WorldActor ! ("whereishare", this)
   }
 
-  def eatHares(hare: Hare) = {
-    if (!getDying()){
+  def eatHaresIfExists(hare: Hare) = {
+    if (!getDying() && !hare.getDying()) {
 	    addEnergy()
-	    hare ! None
+	    hare ! "die"
     }
   }
 
   /**
    * Try to Make Kittens
    */
-  def tryToMakeKittens() = {
+  def tryToMakeKitten() = {
+    
     if (canReproduce()) {
       //send world message to generate a new Kittens
+      WorldActor !
+        new Lynx(0, maxLifeSpan,
+          currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
+          energyGain, energyUse,
+          getX(), getY())
+
+      //reduce current energy
       currentEnergy -= energyUse / 2
-      for (i <- (1 to getReproduceNumber()))
-        WorldActor !
-          new Lynx(0, maxLifeSpan,
-            currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
-            reproduceNum,
-            energyGain, energyUse,
-            getX(), getY())
     }
   }
-
-  /**
-   * mate Probability
-   */
-  def getReproduceNumber(): Int = (math.random * (reproduceNum + 1)).toInt
-
+  
   /**
    * to check energy is meet the require condition
    */
-  def canReproduce(): Boolean = currentEnergy > energyUse
+  def canReproduce(): Boolean = 
+    currentEnergy > energyUse && (getAge() > 0 && getAge() < maxLifeSpan)
 
   override def die() = {
     //println("Age: " +getAge() + " Energy: " + currentEnergy)
