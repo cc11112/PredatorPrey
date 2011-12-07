@@ -46,4 +46,9 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
    * die action
    */
   def die() = this ! None
+  
+  /**
+   * display message
+   */
+  def displayMessage(s:String) = println(s)
 }

@@ -28,7 +28,7 @@ case class Lynx(
         }
         case "die" => quit()
         case h: Hare => eatHaresIfExists(h)
-        case _ => exit()
+        case _ => displayMessage("Lynx:" + hashCode() + " got message. ")
       }
     }
   }

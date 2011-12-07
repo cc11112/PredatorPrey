@@ -21,7 +21,7 @@ case class Hare(
           isDying()
         }
         case "die" => quit()
-        case _ => exit()
+        case _ => displayMessage("Hare:" + hashCode() + " got message. ")
       }
     }
   }
