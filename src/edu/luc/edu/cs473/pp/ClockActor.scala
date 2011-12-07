@@ -26,7 +26,7 @@ object ClockActor extends Actor {
   /**
    * stop clock
    */
-  def Stop() = {
+  private def Stop() = {
     ClockActor ! None
     WorldActor ! None
     println("stop")
@@ -35,7 +35,7 @@ object ClockActor extends Actor {
   /**
    * every ticker to send world ticker message
    */
-  def Ticker() = {
+  private def Ticker() = {
     //println("runing...")
     println(System.nanoTime.toString() + ": ")
 

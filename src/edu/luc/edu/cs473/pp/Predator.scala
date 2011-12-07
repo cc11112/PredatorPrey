@@ -29,7 +29,7 @@ case class Hare(
   /**
    * Try to make Bunnies
    */
-  def tryToMakeBunnies() = {
+  private def tryToMakeBunnies() = {
     if (canReproduce(hareBirthRate)) {
       //send world message to generate a new bunnies
       for (i <- (0 to getReproduceNumber()))
@@ -40,7 +40,7 @@ case class Hare(
   /**
    * mate Probability
    */
-  def getReproduceNumber(): Int = (math.random * hareReproduce).toInt
+  private def getReproduceNumber(): Int = (math.random * hareReproduce).toInt
 
   /**
    * Is this hare at this area

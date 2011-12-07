@@ -6,7 +6,7 @@ object Configure {
   val ScopeRadius: Int = 8
   
   val HareMaxAge: Int = 7
-  val HareBirthRate: Double = 0.07
+  val HareBirthRate: Double = 0.08
   var HareReproduce: Int = 4		//every time max reproduce how many bunnies
   val LynxMaxAge: Int = 15
   val LynxMaxEnergy: Int = 40

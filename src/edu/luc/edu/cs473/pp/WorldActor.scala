@@ -14,7 +14,7 @@ object WorldActor extends Actor {
         case h: Hare => handleHares(h)
         case l: Lynx => handleLynx(l)
         case "ticker" => simlulate()
-        case ("whereishare", l: Lynx) => reply(searchHaresForLynx(l))
+        case ("whereishare", l: Lynx) => searchHaresForLynx(l)
         case _ => exit()
       }
     }
@@ -23,59 +23,53 @@ object WorldActor extends Actor {
   /**
    * to handle hare instance: new/destroy
    */
-  def handleHares(hare: Hare) = {
-    spawn({
-      if (hare.getDying()) {
-        //remove from hares populations
-        displayMessage("hare: " + hare.hashCode() + " dead.")
-        haresPopulation -= hare
-      } else {
-        displayMessage("hare: " + hare.hashCode() + " bron.")
-        //add to hares populations
-        haresPopulation += hare
-        hare.start()
-      }
-    })
+  private def handleHares(hare: Hare) = {
+    if (hare.getDying()) {
+      //remove from hares populations
+      displayMessage("hare: " + hare.hashCode() + " dead.")
+      haresPopulation -= hare
+    } else {
+      displayMessage("hare: " + hare.hashCode() + " bron.")
+      //add to hares populations
+      haresPopulation += hare
+      hare.start()
+    }
   }
 
   /**
    * to handle lynx instance: new/destroy
    */
-  def handleLynx(lynx: Lynx) = {
-    spawn({
-      if (lynx.getDying()) {
-        //remove from lynx populations
-        displayMessage("lynx: " + lynx.hashCode() + " dead.")
-        lynxPopulation -= lynx
-      } else {
-        //add to lynx populations
-        displayMessage("lynx: " + lynx.hashCode() + " bron.")
-        lynxPopulation += lynx
-        lynx.start()
-      }
-    })
+  private def handleLynx(lynx: Lynx) = {
+    if (lynx.getDying()) {
+      //remove from lynx populations
+      displayMessage("lynx: " + lynx.hashCode() + " dead.")
+      lynxPopulation -= lynx
+    } else {
+      //add to lynx populations
+      displayMessage("lynx: " + lynx.hashCode() + " bron.")
+      lynxPopulation += lynx
+      lynx.start()
+    }
   }
 
   /**
    * search hares for lynx
    */
-  def searchHaresForLynx(lynx: Lynx): Option[Hare] = {
-    var hare : Option[Hare] = None
-    spawn({
-      hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
-      if (!hare.isEmpty) {
-        displayMessage("lynx" + lynx.hashCode() + " is catching a hare: " + hare.hashCode())
-        haresPopulation -= hare.get
-        hare.get ! "die" //kill this hare
-      }
-    })
-    return hare
+  private def searchHaresForLynx(lynx: Lynx) = {
+    //spawn({
+    val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
+    if (!hare.isEmpty && !lynx.getDying()) {
+      haresPopulation -= hare.get
+      lynx ! hare.get
+    }
+    //})
+
   }
 
   /**
    * Ask Hares/Lynx every ticker
    */
-  def simlulate() = {
+  private def simlulate() = {
     for (hare <- haresPopulation) {
       hare ! "alive"
     }
@@ -84,8 +78,17 @@ object WorldActor extends Actor {
       lynx ! "alive"
     }
 
+    outputResult()
+  }
+
+  /**
+   * output result
+   *
+   */
+  private def outputResult() = {
+
     val h: Int = getHaresCount()
-    var l: Int = getLynxCount()
+    val l: Int = getLynxCount()
 
     println("====Hares Population: " + h.toString())
     println("====Lynx Population: " + l.toString())
@@ -106,7 +109,7 @@ object WorldActor extends Actor {
    */
   def getLynxCount(): Int = lynxPopulation.count(e => !e.getDying())
 
-  def displayMessage(s: String) = {
+  private def displayMessage(s: String) = {
     if (Configure.DisplayMessage)
       println(s)
   }
@@ -114,7 +117,7 @@ object WorldActor extends Actor {
   /**
    * initial world actor
    */
-  def initial(hares: Int, lynx: Int) = {
+  private def initial(hares: Int, lynx: Int) = {
     println("initial...")
 
     //create hares
@@ -139,6 +142,8 @@ object WorldActor extends Actor {
         WorldSpace.getRandomX(),
         WorldSpace.getRandomY()))
     }
+
+    outputResult()
 
     //start world actor
     start()
