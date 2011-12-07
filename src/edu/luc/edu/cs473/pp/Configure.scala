@@ -10,8 +10,8 @@ object Configure {
   var HareReproduce: Int = 4		//every time max reproduce how many bunnies
   val LynxMaxAge: Int = 15
   val LynxMaxEnergy: Int = 40
-  val EnergyGainPreHare: Int = 5
-  val EnergyUseReproduce: Int = 10
+  val EnergyGainPreHare: Int = 6
+  val EnergyUseReproduce: Int = 14
 
   val InitialHares: Int = 70
   val InitialLynx: Int = 5
