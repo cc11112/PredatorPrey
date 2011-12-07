@@ -32,7 +32,7 @@ case class Hare(
   def tryToMakeBunnies() = {
     if (canReproduce(hareBirthRate)) {
       //send world message to generate a new bunnies
-      for (i <- (1 to getReproduceNumber()))
+      for (i <- (0 to getReproduceNumber()))
         WorldActor ! new Hare(0, maxLifeSpan, hareBirthRate, hareReproduce, getX(), getY())
     }
   }
@@ -45,10 +45,8 @@ case class Hare(
   /**
    * Is this hare at this area
    */
-  def isOnThisPot(x: Int, y: Int): Boolean = {
-    (x - 10 <= getX() && getX() <= x + 10
-      && y - 10 <= getY() && getY() <= y + 10)
-  }
+  def isOnThisPot(x: Int, y: Int): Boolean = 
+	  WorldSpace.isInScope(x, y, getX(), getY())
 
   override def die() = {
     if (getAge() > maxLifeSpan) {

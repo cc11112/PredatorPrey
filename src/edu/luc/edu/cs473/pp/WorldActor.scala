@@ -33,7 +33,6 @@ object WorldActor extends Actor {
       //add to hares populations
       haresPopulation += hare
       hare.start()
-      
     }
   }
 
@@ -79,9 +78,16 @@ object WorldActor extends Actor {
     for (lynx <- lynxPopulation) {
       lynx ! "alive"
     }
+
+    val h: Int = haresPopulation.count(e => !e.getDying())
+    var l: Int = lynxPopulation.count(e => !e.getDying())
+    println("====Hares Population: " + h.toString())
+    println("====Lynx Population: " + l.toString())
     
-    println("====Hares Population: " + haresPopulation.count(e => !e.getDying()).toString())
-    println("====Lynx Population: " + lynxPopulation.count(e => !e.getDying()).toString())
+    if (h ==0 && l == 0) {
+      ClockActor ! "stop"
+      System.exit(0)
+    }
   }
   
   def displayMessage(s:String) = {
@@ -131,7 +137,7 @@ object WorldActor extends Actor {
 
     Thread.sleep(1000 * Configure.Runtime)
 
-    ClockActor.Stop()
+    ClockActor ! "stop"
 
     System.exit(0)
   }

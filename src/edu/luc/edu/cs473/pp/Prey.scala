@@ -20,7 +20,6 @@ case class Lynx(
         case "alive" => {
           run()
           consumeEnergy() 	//"set-energy"
-          die()
           tryToEat()		//search hare
           tryToMakeKitten()
           setAge()
@@ -66,7 +65,7 @@ case class Lynx(
       //send world message to generate a new Kittens
       WorldActor !
         new Lynx(0, maxLifeSpan,
-          currentEnergy / 2, // Kitten starts with 1/2 of the parents energy
+          currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
           energyGain, energyUse,
           getX(), getY())
 
@@ -79,7 +78,7 @@ case class Lynx(
    * to check energy is meet the require condition
    */
   def canReproduce(): Boolean = 
-    currentEnergy > energyUse && (getAge() > 0 && getAge() < maxLifeSpan)
+    (currentEnergy > energyUse) && getAge() > 0 
 
   override def die() = {
     //println("Age: " +getAge() + " Energy: " + currentEnergy)

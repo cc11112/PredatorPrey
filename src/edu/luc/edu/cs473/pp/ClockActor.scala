@@ -6,6 +6,8 @@ object ClockActor extends Actor {
   def act() {
     Actor.loop {
       react {
+        case "start" => Start()
+        case "stop" => Stop()
         case "ticker" => Ticker()
         case _ => exit()
       }
