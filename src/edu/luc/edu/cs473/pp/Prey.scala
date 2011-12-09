@@ -27,7 +27,6 @@ case class Lynx(
           isDying()
         }
         case "die" => quit()
-        case h: Hare => eatHaresIfExists(h)
         case _ => displayMessage("Lynx:" + hashCode() + " got message. ")
       }
     }
@@ -52,12 +51,9 @@ case class Lynx(
    * Try to catch hare
    */
   def tryToEat() = {
-    WorldActor ! ("whereishare", this)
-  }
-
-  def eatHaresIfExists(hare: Hare) = {
-    if (!getDying()) {
-    	hare ! "die"            //kill this hare
+    //Send Block Message here, to get worldActor response here
+    val hare = WorldActor !? (("whereishare", this))
+    if (hare != None){
     	addEnergy()
     }
   }
