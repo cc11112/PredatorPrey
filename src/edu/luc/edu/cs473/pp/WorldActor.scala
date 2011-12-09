@@ -2,6 +2,7 @@ package edu.luc.edu.cs473.pp
 
 import scala.actors._
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.ops._
 
 object WorldActor extends Actor {
   private val haresPopulation = new ListBuffer[Hare]
@@ -57,14 +58,15 @@ object WorldActor extends Actor {
    * search hares for lynx
    */
   def searchHaresForLynx(lynx: Lynx) = {
-    //TODO: search the first hare for lynx
-    val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
+    spawn({
+    	val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
 
-    if (!hare.isEmpty && !lynx.getDying()) {
-      displayMessage("lynx" + lynx.hashCode() + " is catching a hare: " + hare.hashCode())
-      haresPopulation -= hare.get
-      lynx ! hare.get
-    }
+	    if (!hare.isEmpty && !lynx.getDying()) {
+	      displayMessage("lynx" + lynx.hashCode() + " is catching a hare: " + hare.hashCode())
+	      haresPopulation -= hare.get
+	      lynx ! hare.get
+	    }
+    })
   }
 
   /**
