@@ -4,8 +4,12 @@ object WorldSpace {
   def getRandomX(): Int = (math.random * Configure.WorldWidth).toInt
   def getRandomY(): Int = (math.random * Configure.WorldHeight).toInt
 
+  /**
+   * we assume the world is around, if move to navigate position,
+   * or over range the scope, we let them appear to another site
+   */
   def getRandomX(x: Int, step: Int): Int = {
-    val nextX: Int = x + direction() * (math.random * (step + 1)).toInt
+    val nextX: Int = x + direction() * (math.random * step).toInt
     if (nextX < 0)
       Configure.WorldWidth + nextX
     else if (nextX > Configure.WorldWidth)
@@ -15,7 +19,7 @@ object WorldSpace {
   }
    
   def getRandomY(y:Int, step: Int) : Int = {
-    val nextY: Int = y + direction() * (math.random * (step + 1)).toInt
+    val nextY: Int = y + direction() * (math.random * step ).toInt
     if (nextY < 0)
       Configure.WorldHeight + nextY
     else if (nextY > Configure.WorldHeight)
@@ -25,7 +29,7 @@ object WorldSpace {
   }
   
   /**
-   * Select randomd direction
+   * Select random direction
    */
   def direction(): Int = {
     if ((math.random * 100).toInt % 2 == 0)
