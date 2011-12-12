@@ -9,6 +9,7 @@ object ClockActor extends Actor {
       react {
         case "stop" => reply(Stop())
         case "ticker" => reply(Ticker())
+        case "exit" => exit() 
         case x: Any => println("Error: clock message! " + x)
       }
     }
@@ -17,7 +18,7 @@ object ClockActor extends Actor {
   /**
    * start clock
    */
-  def Start() = {
+  def startClock() = {
     println("timer start...")
 
     running = true
@@ -34,11 +35,7 @@ object ClockActor extends Actor {
 
     println("timer stop.")
     
-    WorldActor ! "exit"
-    
     running = false
-    
-    ClockActor.exit()
     
     "stop"
   }

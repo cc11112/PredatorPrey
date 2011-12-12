@@ -36,5 +36,5 @@ object TestClockActorSpec extends Specification {
     }
   }
   
-  ClockActor.Start()
+  ClockActor.startClock()
 }

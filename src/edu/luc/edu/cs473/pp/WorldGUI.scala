@@ -38,7 +38,6 @@ object WorldGUI extends SimpleSwingApplication {
     val buttonStart = new Button {
       text = "Start"
       action = Action("Start") {
-        ShapeDrawingActor.start()
         WorldActor.run(true)
       }
     }
@@ -46,33 +45,31 @@ object WorldGUI extends SimpleSwingApplication {
       text = "Stop"
       action = Action("Stop") {
         WorldActor.run(false)
-        Thread.sleep(1000)
       }
     }
 
-//    val ImagePanel = new ImagePanel(10, 1) {
-//      contents += buttonStart
-//      contents += buttonStop
-//      contents += buttonExit
-//    }
-//
-    contents = new BoxPanel(Orientation.Vertical) {
-
+    val imagePanel = new ImagePanel(0, 1) {
       contents += buttonStart
       contents += buttonStop
       contents += buttonExit
+    }
+
+    contents = new BoxPanel(Orientation.Vertical) {
+
+      contents += imagePanel
       contents += dataPanel
+      contents += new ImagePanel(0, 1) {
+      }
 
-      // border = Swing.EmptyBorder(30, 30, 500, 300)
-
-      val s = new Dimension(500, 700)
+      val s = new Dimension(Configure.WorldWidth, Configure.WorldHeight + 100)
 
       minimumSize = s
       maximumSize = s
       preferredSize = s
     }
-    
-     centerOnScreen
-     listenTo(this)
+
+    ShapeDrawingActor.start()
+    centerOnScreen
+    listenTo(this)
   }
 }

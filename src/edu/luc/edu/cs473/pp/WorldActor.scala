@@ -14,7 +14,7 @@ object WorldActor extends Actor {
         case l: Lynx => handleLynx(l)
         case "ticker" => simlulate()
         case ("whereishare", l: Lynx) => searchHaresForLynx(l)
-        case "exit" => exit()
+        case "exit" => quit()
         case x: Any => displayMessage("Error: Unknown message! " + x)
       }
     }
@@ -162,11 +162,17 @@ object WorldActor extends Actor {
   def run(running: Boolean): Unit = {
     if (running) {
       initial(Configure.InitialHares, Configure.InitialLynx)
-      ClockActor.Start()
+      ClockActor.startClock()
     } else {
-      WorldGUI.ShapeDrawingActor ! "exit"
-      ClockActor ! "stop"
+      reset()
+      ClockActor !? "stop"
     }
+  }
+
+  private def quit() = {
+    exit()
+    ClockActor ! "exit"
+
   }
 
   def main(args: Array[String]): Unit = {
@@ -177,14 +183,16 @@ object WorldActor extends Actor {
 
     run(false)
 
-    Thread.sleep(2000)
-    
+    Thread.sleep(1000)
+
+    println("Restart agan...........................")
+
     run(true)
-    
+
     Thread.sleep(1000 * Configure.Runtime)
 
     run(false)
-    
+
     System.exit(0)
   }
 }

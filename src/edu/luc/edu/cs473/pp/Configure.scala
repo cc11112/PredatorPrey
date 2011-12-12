@@ -13,18 +13,18 @@ object Configure {
   val LynxSize: Int = 10
   
   val ScopeRadius: Int = 10			//lynx hunt hare scope
-  val HareRunStep: Int = 15			//every time hare step 
+  val HareRunStep: Int = 25			//every time hare step 
   val LynxRunStep: Int = 35			//every time lynx step
   
   val HareMaxAge: Int = 7			//max age of hare
-  val HareBirthRate: Double = 0.06	//birth rate of hare
+  val HareBirthRate: Double = 0.09	//birth rate of hare
   var HareReproduce: Int = 4		//every time max reproduce how many bunnies
-  val LynxMaxAge: Int = 15			//max age of lynx
+  val LynxMaxAge: Int = 12			//max age of lynx
   val LynxMaxEnergy: Int = 40		//max energy of lynx for initial lynx energy
   val EnergyGainPreHare: Int = 6	//energy for gain each hare
   val EnergyUseReproduce: Int = 15	//energy for reproduce kitten
 
-  val InitialHares: Int = 60		//initial hares  Population
+  val InitialHares: Int = 70		//initial hares  Population
   val InitialLynx: Int = 8			//initial lynx Population
   
   val Runtime: Int = 10 			//simulation time
