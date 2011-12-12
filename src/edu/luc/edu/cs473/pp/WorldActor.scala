@@ -164,7 +164,6 @@ object WorldActor extends Actor {
       initial(Configure.InitialHares, Configure.InitialLynx)
       ClockActor.startClock()
     } else {
-      reset()
       ClockActor !? "stop"
     }
   }
