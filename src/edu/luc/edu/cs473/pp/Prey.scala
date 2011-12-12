@@ -8,7 +8,8 @@ case class Lynx(
   energy: Int, //initialize energy  
   energyGain: Int, //energy-per-hare-eaten
   energyUse: Int, //lynx-energy-to-reproduce
-  startX: Int, startY: Int //initial lynx position
+  startX: Int, startY: Int, //initial lynx position
+  lynxStep: Int			//every time randomly move step
   )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
 
@@ -18,7 +19,7 @@ case class Lynx(
     Actor.loop {
       react {
         case "alive" => {
-          run()
+          run(lynxStep)
           consumeEnergy() //"set-energy"
           tryToEat() //search hare
           tryToMakeKitten()
@@ -57,10 +58,10 @@ case class Lynx(
    * eat the hare
    */
   private def killHare(hare: Hare) = {
-    if (!hare.getDying()) {
-      hare ! "die" //kill this hare
-      addEnergy()
-    }
+	  if (hare != null){
+	      hare ! "die" //kill this hare
+	      addEnergy()
+	  }
   }
 
   /**
@@ -73,7 +74,7 @@ case class Lynx(
         new Lynx(0, maxLifeSpan,
           currentEnergy / 2 + 1, // Kitten starts with 1/2 of the parents energy
           energyGain, energyUse,
-          getX(), getY())
+          getX(), getY(), lynxStep)
 
       //reduce current energy
       currentEnergy /= 2
@@ -89,8 +90,8 @@ case class Lynx(
   override def die() = WorldActor ! this
 
   override def isDying() = {
-    //println("Age: " +getAge() + " Energy: " + currentEnergy)
-    if (getAge() > maxLifeSpan || currentEnergy < 0) {
+    //println("Age: " +getAge() + " Energy: " + getEnergy())
+    if (getAge() > maxLifeSpan || getEnergy() < 0) {
       quit()
     }
   }

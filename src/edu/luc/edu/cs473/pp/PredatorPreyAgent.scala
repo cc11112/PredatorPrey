@@ -23,9 +23,10 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
 
   def canReproduce(birthRate: Double): Boolean =
     math.random < birthRate && getAge() > 0
-
-  def run() = {
-    setXY(WorldSpace.getRandomX(), WorldSpace.getRandomY())
+  
+  def run(step: Int) = {
+    setXY(WorldSpace.getRandomX(getX(), step), 
+        WorldSpace.getRandomY(getY(), step))
   }
 
   /**

@@ -6,8 +6,9 @@ case class Hare(
   age: Int, //initial age
   maxLifeSpan: Int, //max-hare-age
   hareBirthRate: Double, //hare-birth-rate
-  hareReproduce: Int, //every time reprodue 
-  startX: Int, startY: Int //initial lynx position
+  hareReproduce: Int, //every time reproduce 
+  startX: Int, startY: Int, //initial hare position: X, Y
+  hareStep: Int			//every time randomly move step
   )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
 
@@ -15,7 +16,7 @@ case class Hare(
     Actor.loop {
       react {
         case "alive" => {
-          run()
+          run(hareStep)
           tryToMakeBunnies()
           setAge()
           isDying()
@@ -33,7 +34,7 @@ case class Hare(
     if (canReproduce(hareBirthRate)) {
       //send world message to generate a new bunnies
       for (i <- (0 to getReproduceNumber()))
-        WorldActor ! new Hare(0, maxLifeSpan, hareBirthRate, hareReproduce, getX(), getY())
+        WorldActor ! new Hare(0, maxLifeSpan, hareBirthRate, hareReproduce, getX(), getY(), hareStep)
     }
   }
 

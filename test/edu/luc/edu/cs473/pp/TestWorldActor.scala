@@ -40,7 +40,8 @@ class TestWorldActor extends FunSuite {
     test(description) {
 
       WorldActor ! message
-      Thread.sleep(100)
+      
+      Thread.sleep(200)
 
       assert(WorldActor.getLynxCount() === lynx)
       assert(WorldActor.getHaresCount() === hare)
@@ -60,33 +61,28 @@ class TestWorldActor extends FunSuite {
     }
   }
 
+  WorldActor.reset()
   WorldActor.start()
 
-  val h = new Hare(0, Configure.HareMaxAge, Configure.HareBirthRate, Configure.HareReproduce, 0, 0)
+  val h = new Hare(0, Configure.HareMaxAge, Configure.HareBirthRate, Configure.HareReproduce, 0, 0, Configure.HareRunStep)
 
   testHares("test new born bunny:", h, 1)
 
-  val l = new Lynx(0, Configure.LynxMaxAge, Configure.EnergyUseReproduce, Configure.EnergyGainPreHare, Configure.EnergyUseReproduce, 0, 0)
+  val l = new Lynx(0, Configure.LynxMaxAge, Configure.EnergyUseReproduce, Configure.EnergyGainPreHare, Configure.EnergyUseReproduce, 0, 0, Configure.LynxRunStep)
 
   testLynx("test new born kitten:", l, 1)
 
   testHares("test another new born bunny:",
-    new Hare(Configure.HareMaxAge - 1, Configure.HareMaxAge, Configure.HareBirthRate, Configure.HareReproduce, 0, 0),
+    new Hare(Configure.HareMaxAge - 1, Configure.HareMaxAge, Configure.HareBirthRate, Configure.HareReproduce, 0, 0, Configure.HareRunStep),
     2)
 
   testLynx("test another new born kitten:",
-    new Lynx(Configure.LynxMaxAge, Configure.LynxMaxAge, Configure.EnergyUseReproduce, Configure.EnergyGainPreHare, Configure.EnergyUseReproduce, 0, 0),
+    new Lynx(Configure.LynxMaxAge, Configure.LynxMaxAge, Configure.EnergyUseReproduce, Configure.EnergyGainPreHare, Configure.EnergyUseReproduce, 0, 0, Configure.LynxRunStep),
     2)
-
-  //one of lynx should be die
-  testSimluate("test simulate", "ticker", 1, 2)
-
-  //one of hare should be die
-  testSimluate("test simulate ticker 2", "ticker", 1, 1)
-
+  
   //test position has hare
-  //hare is killed
-  testPositionofHare("test position of hare", h, l, 0)
+  //one of hares will be killed, so, only one is left
+  testPositionofHare("test position of hare", h, l, 1)
 
 }
 

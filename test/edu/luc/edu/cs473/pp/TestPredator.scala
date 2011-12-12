@@ -38,7 +38,9 @@ class TestPredator extends FunSuite {
     Configure.HareBirthRate,
     Configure.HareReproduce,
     -1,
-    -1)
+    -1,
+    Configure.HareRunStep
+    )
   h1.start()
 
   /**
@@ -54,7 +56,8 @@ class TestPredator extends FunSuite {
     Configure.HareBirthRate,
     Configure.HareReproduce,
     0,
-    0)
+    0,
+    Configure.HareRunStep)
   h2.start()
 
   /**
@@ -73,7 +76,8 @@ class TestPredator extends FunSuite {
     Configure.HareBirthRate,
     Configure.HareReproduce,
     100,
-    100)
+    100,
+    Configure.HareRunStep)
 
   testScope("testIsInThisScope", h3, 100 + Configure.ScopeRadius / 2, 100 - Configure.ScopeRadius / 2, true)
   

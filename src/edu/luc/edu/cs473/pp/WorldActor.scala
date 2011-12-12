@@ -112,6 +112,14 @@ object WorldActor extends Actor {
   }
 
   /**
+   * Reset all variables
+   */
+  def reset() = {
+    haresPopulation.clear()
+    lynxPopulation.clear()
+  }
+  
+  /**
    * initial world actor
    */
   private def initial(hares: Int, lynx: Int) = {
@@ -125,7 +133,8 @@ object WorldActor extends Actor {
         Configure.HareBirthRate,
         Configure.HareReproduce,
         WorldSpace.getRandomX(),
-        WorldSpace.getRandomY()))
+        WorldSpace.getRandomY(),
+        Configure.HareRunStep))
     }
 
     //create lynx
@@ -137,7 +146,8 @@ object WorldActor extends Actor {
         Configure.EnergyGainPreHare,
         Configure.EnergyUseReproduce,
         WorldSpace.getRandomX(),
-        WorldSpace.getRandomY()))
+        WorldSpace.getRandomY(),
+        Configure.LynxRunStep))
     }
 
     outputResult()
