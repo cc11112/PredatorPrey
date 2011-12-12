@@ -1,12 +1,20 @@
 package edu.luc.edu.cs473.pp
 
+import java.awt.{Color}
+
 object Configure {
   val WorldWidth: Int = 300			//world space width
   val WorldHeight: Int = 300		//world space height
   
+  val HareColor: Color = Color.YELLOW
+  val LynxColor: Color = Color.RED
+  
+  val HareSize: Int = 5
+  val LynxSize: Int = 10
+  
   val ScopeRadius: Int = 10			//lynx hunt hare scope
-  val HareRunStep: Int = 5			//every time hare step 
-  val LynxRunStep: Int = 12			//every time lynx step
+  val HareRunStep: Int = 15			//every time hare step 
+  val LynxRunStep: Int = 35			//every time lynx step
   
   val HareMaxAge: Int = 7			//max age of hare
   val HareBirthRate: Double = 0.06	//birth rate of hare
@@ -19,6 +27,6 @@ object Configure {
   val InitialHares: Int = 60		//initial hares  Population
   val InitialLynx: Int = 8			//initial lynx Population
   
-  val Runtime: Int = 100 			//simulation time
+  val Runtime: Int = 10 			//simulation time
   val DisplayMessage: Boolean = false //only to display debug message
 }

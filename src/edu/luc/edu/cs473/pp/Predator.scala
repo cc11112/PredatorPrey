@@ -3,12 +3,12 @@ package edu.luc.edu.cs473.pp
 import scala.actors._
 
 case class Hare(
-  age: Int, //initial age
-  maxLifeSpan: Int, //max-hare-age
-  hareBirthRate: Double, //hare-birth-rate
-  hareReproduce: Int, //every time reproduce 
+  age: Int, 				//initial age
+  maxLifeSpan: Int, 		//max-hare-age
+  hareBirthRate: Double, 	//hare-birth-rate
+  hareReproduce: Int, 		//every time reproduce 
   startX: Int, startY: Int, //initial hare position: X, Y
-  hareStep: Int			//every time randomly move step
+  hareStep: Int				//every time randomly move step
   )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
 
@@ -22,7 +22,7 @@ case class Hare(
           isDying()
         }
         case "die" => quit()
-        case _ => displayMessage("Hare:" + hashCode() + " got message. ")
+        case x: Any => displayMessage("Error! Hare:" + hashCode() + " got message:" + x)
       }
     }
   }

@@ -29,7 +29,8 @@ case class Lynx(
         case h: Hare => killHare(h) //got the hare
         case (x: Int, y: Int) => setXY(x, y) //moveTo(x, y)
         case "die" => quit()
-        case _ => displayMessage("Lynx:" + hashCode() + " got message. ")
+        case x: Any => displayMessage("Error! Lynx:" + hashCode() + " got message:" + x)
+        //case _ => displayMessage("Lynx:" + hashCode() + " got message. ")
       }
     }
   }

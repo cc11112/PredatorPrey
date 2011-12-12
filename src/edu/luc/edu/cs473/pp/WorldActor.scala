@@ -15,7 +15,7 @@ object WorldActor extends Actor {
         case "ticker" => simlulate()
         case ("whereishare", l: Lynx) => searchHaresForLynx(l)
         case "exit" => exit()
-        case _ => displayMessage("WorldActor got message. ")
+        case x: Any => displayMessage("Error: Unknown message! " + x)
       }
     }
   }
@@ -91,10 +91,10 @@ object WorldActor extends Actor {
     println("====Hares Population: " + h.toString())
     println("====Lynx Population: " + l.toString())
 
-    if (h == 0 && l == 0) {
-      ClockActor ! "stop"
-      System.exit(0)
-    }
+    val hares = haresPopulation.map(h => new Circle(h.getX(), h.getY(), Configure.HareSize, Configure.HareColor))
+    val lynx = lynxPopulation.map(l => new Square(l.getX(), l.getY(), Configure.LynxSize, Configure.LynxSize, Configure.LynxColor))
+
+    WorldGUI.ShapeDrawingActor ! (hares, lynx)
   }
 
   /**
@@ -127,7 +127,7 @@ object WorldActor extends Actor {
     println("initial...")
 
     reset()
-    
+
     //create hares
     for (i <- (1 to hares)) {
       handleHares(new Hare(
@@ -164,20 +164,27 @@ object WorldActor extends Actor {
       initial(Configure.InitialHares, Configure.InitialLynx)
       ClockActor.Start()
     } else {
-    	ClockActor !? "stop"
+      WorldGUI.ShapeDrawingActor ! "exit"
+      ClockActor ! "stop"
     }
   }
 
   def main(args: Array[String]): Unit = {
 
-    initial(Configure.InitialHares, Configure.InitialLynx)
-
-    ClockActor.Start()
+    run(true)
 
     Thread.sleep(1000 * Configure.Runtime)
 
-    ClockActor ! "stop"
+    run(false)
 
+    Thread.sleep(2000)
+    
+    run(true)
+    
+    Thread.sleep(1000 * Configure.Runtime)
+
+    run(false)
+    
     System.exit(0)
   }
 }
