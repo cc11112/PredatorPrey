@@ -23,6 +23,17 @@ object TestClockActorSpec extends Specification {
         }
         res must beTrue
     }
+    
+    "send a stop message" in{
+        var res = false
+        val a = actor{}
+        val mos = {ClockActor !? "stop"}
+        mos match{
+             case "stop" => res = true
+             case _ => res = false
+        }
+        res must beTrue
+    }
   }
   
   ClockActor.Start()

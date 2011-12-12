@@ -14,6 +14,7 @@ object WorldActor extends Actor {
         case l: Lynx => handleLynx(l)
         case "ticker" => simlulate()
         case ("whereishare", l: Lynx) => searchHaresForLynx(l)
+        case "exit" => exit()
         case _ => displayMessage("WorldActor got message. ")
       }
     }
@@ -118,13 +119,15 @@ object WorldActor extends Actor {
     haresPopulation.clear()
     lynxPopulation.clear()
   }
-  
+
   /**
    * initial world actor
    */
   private def initial(hares: Int, lynx: Int) = {
     println("initial...")
 
+    reset()
+    
     //create hares
     for (i <- (1 to hares)) {
       handleHares(new Hare(
@@ -156,6 +159,15 @@ object WorldActor extends Actor {
     start()
   }
 
+  def run(running: Boolean): Unit = {
+    if (running) {
+      initial(Configure.InitialHares, Configure.InitialLynx)
+      ClockActor.Start()
+    } else {
+    	ClockActor !? "stop"
+    }
+  }
+
   def main(args: Array[String]): Unit = {
 
     initial(Configure.InitialHares, Configure.InitialLynx)
@@ -165,8 +177,6 @@ object WorldActor extends Actor {
     Thread.sleep(1000 * Configure.Runtime)
 
     ClockActor ! "stop"
-
-    println("stop")
 
     System.exit(0)
   }

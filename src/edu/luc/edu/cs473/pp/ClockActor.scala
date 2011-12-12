@@ -3,12 +3,13 @@ package edu.luc.edu.cs473.pp
 import scala.actors._
 
 object ClockActor extends Actor {
+  private var running: Boolean = false
   def act() {
     Actor.loop {
       react {
-        case "stop" => Stop()
+        case "stop" => reply(Stop())
         case "ticker" => reply(Ticker())
-        case _ => exit()
+        case "exit" => exit()
       }
     }
   }
@@ -17,7 +18,8 @@ object ClockActor extends Actor {
    * start clock
    */
   def Start() = {
-    println("start...")
+    println("timer start...")
+    running = true
     ClockActor.start
     ClockActor ! "ticker"
   }
@@ -25,25 +27,32 @@ object ClockActor extends Actor {
   /**
    * stop clock
    */
-  private def Stop() = {
-    ClockActor ! None
-    WorldActor ! None
-    println("stop")
+  private def Stop(): String = {
+    
+    WorldActor !? "exit"
+    
+    running = false
+    
+    ClockActor.exit()
+    
+    println("timer stop.")
+    "stop"
   }
 
   /**
    * every ticker to send world ticker message
    */
-  private def Ticker() : String = {
-    //println("runing...")
-    println(System.nanoTime.toString() + ": ")
-
-    WorldActor ! "ticker"
-
-    Thread.sleep(1000)
-
-    ClockActor ! "ticker"
+  private def Ticker(): String = {
     
+    if (running){
+    	println(System.nanoTime.toString() + ": ")
+      
+	    WorldActor ! "ticker"
+	
+	    Thread.sleep(1000)
+	
+	    ClockActor ! "ticker"
+    }
     "ticker"
   }
 }
