@@ -6,9 +6,8 @@ object ClockActor extends Actor {
   def act() {
     Actor.loop {
       react {
-        case "start" => Start()
         case "stop" => Stop()
-        case "ticker" => Ticker()
+        case "ticker" => reply(Ticker())
         case _ => exit()
       }
     }
@@ -35,7 +34,7 @@ object ClockActor extends Actor {
   /**
    * every ticker to send world ticker message
    */
-  private def Ticker() = {
+  private def Ticker() : String = {
     //println("runing...")
     println(System.nanoTime.toString() + ": ")
 
@@ -44,5 +43,7 @@ object ClockActor extends Actor {
     Thread.sleep(1000)
 
     ClockActor ! "ticker"
+    
+    "ticker"
   }
 }

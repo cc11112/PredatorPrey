@@ -41,10 +41,11 @@ class TestPrey extends FunSuite {
     }
   }
 
+  var energy: Int = Configure.EnergyUseReproduce 
   val l: Lynx = new Lynx(
     0,
     Configure.LynxMaxAge,
-    Configure.EnergyUseReproduce, 
+    energy, 
     Configure.EnergyGainPreHare,
     Configure.EnergyUseReproduce,
     -1,
@@ -59,7 +60,13 @@ class TestPrey extends FunSuite {
    * test lynx actor with alive message
    */
   for (i <- (1 to Configure.LynxMaxAge - 1)) {
-    testActor("testcase" + i, l, "alive", i, Configure.EnergyUseReproduce  - i,
+    if (energy > Configure.EnergyUseReproduce){
+      energy = energy / 2
+    }
+    else{
+      energy -= 1
+    }
+    testActor("testcase" + i, l, "alive", i, energy,
       (Configure.EnergyUseReproduce - i < 0 || i > Configure.LynxMaxAge))
   }
 }
