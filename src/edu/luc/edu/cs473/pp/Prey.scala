@@ -9,22 +9,34 @@ case class Lynx(
   energyGain: Int, //energy-per-hare-eaten
   energyUse: Int, //lynx-energy-to-reproduce
   startX: Int, startY: Int, //initial lynx position
-  lynxStep: Int			//every time randomly move step
+  lynxStep: Int //every time randomly move step
   )
   extends PredatorPreyAgent(age, maxLifeSpan, startX, startY) {
 
+  private var isContorlled: Boolean = false
+
+  def setContorlled(b: Boolean): Unit = isContorlled = b
+  def getContorlled(): Boolean = isContorlled
+  
   private var currentEnergy: Int = energy
+
+  override def run(step: Int) = {
+    if (!getContorlled())
+      super.run(step)
+  }
 
   def act() {
     Actor.loop {
       react {
         case "alive" => {
-          run(lynxStep)
-          consumeEnergy() //"set-energy"
-          tryToEat() //search hare
-          tryToMakeKitten()
-          setAge()
-          isDying()
+          if (!getContorlled()) {
+            run(lynxStep)
+            consumeEnergy() //"set-energy"
+            tryToEat() //search hare
+            tryToMakeKitten()
+            setAge()
+            isDying()
+          }
         }
         case h: Hare => killHare(h) //got the hare
         case (x: Int, y: Int) => setXY(x, y) //moveTo(x, y)
@@ -59,10 +71,10 @@ case class Lynx(
    * eat the hare
    */
   private def killHare(hare: Hare) = {
-	  if (hare != null){
-	      hare ! "die" //kill this hare
-	      addEnergy()
-	  }
+    if (hare != null) {
+      hare ! "die" //kill this hare
+      addEnergy()
+    }
   }
 
   /**

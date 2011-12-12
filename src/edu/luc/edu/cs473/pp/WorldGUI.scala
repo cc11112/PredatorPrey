@@ -12,7 +12,7 @@ object WorldGUI extends SimpleSwingApplication {
     def act() {
       loop {
         receive {
-          case (hares: Seq[Circle], lynx: Seq[Square]) => dataPanel.draw(hares, lynx)
+          case (hares: Seq[Hare], lynx: Seq[Lynx]) => dataPanel.draw(hares, lynx)
           case "exit" => println("exiting..."); exit
           case x: Any => println("Error: Unknown message! " + x)
         }
@@ -21,6 +21,7 @@ object WorldGUI extends SimpleSwingApplication {
   }
 
   val dataPanel = new DataPanel(null, null) {
+   
     border = Swing.EmptyBorder(30, 100, Configure.WorldWidth, Configure.WorldHeight)
   }
 

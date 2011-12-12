@@ -23,11 +23,17 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
 
   def canReproduce(birthRate: Double): Boolean =
     math.random < birthRate && getAge() > 0
-  
+
   def run(step: Int) = {
-    setXY(WorldSpace.getRandomX(getX(), step), 
-        WorldSpace.getRandomY(getY(), step))
+    setXY(WorldSpace.getRandomX(getX(), step),
+      WorldSpace.getRandomY(getY(), step))
   }
+
+  /**
+   * Is this agent at this area
+   */
+  def isOnThisPot(x: Int, y: Int): Boolean =
+    WorldSpace.isInScope(x, y, getX(), getY())
 
   /**
    * quit this world
@@ -37,19 +43,19 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
     die()
     exit()
   }
-  
+
   /**
    * Check is it time to die
    */
   def isDying(): Unit
-  
+
   /**
    * die action
    */
   def die() = this ! None
-  
+
   /**
    * display message
    */
-  def displayMessage(s:String) = println(s)
+  def displayMessage(s: String) = println(s)
 }

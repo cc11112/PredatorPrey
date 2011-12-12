@@ -1,6 +1,7 @@
 package edu.luc.edu.cs473.pp
 
 import swing._
+import event._
 import java.awt.{ Color, Graphics }
 import java.awt.image.BufferedImage
 import java.io.File
@@ -19,7 +20,7 @@ class Circle(var x: Int, var y: Int, radius: Int, fillColor: Color) extends Shap
     if (y + radius > Configure.WorldHeight) {
       y = Configure.WorldHeight - radius
     }
-     
+
     if (fillColor == null) {
       g.drawOval(x, y, radius, radius)
     } else {
@@ -53,13 +54,41 @@ class Square(var x: Int, var y: Int, width: Int, height: Int, fillColor: Color) 
   def area: Double = width * height
 }
 
-case class DataPanel(circles: Seq[Circle], square: Seq[Square]) extends Panel {
-  private var _circles = circles
-  private var _squares = square
+case class DataPanel(hares: Seq[Hare], lynx: Seq[Lynx]) extends Panel {
+  private var _hares = hares
+  private var _lynx = lynx
+  private var interActiveLynx: Option[Lynx] = None
 
-  def draw(h: Seq[Circle], l: Seq[Square]) = {
-    _circles = h
-    _squares = l
+  focusable = true
+  listenTo(mouse.clicks, mouse.moves, keys)
+
+  reactions += {
+    case e: MousePressed => interActiveLynx = searchLynx(e.point.getX().toInt, e.point.getY().toInt)
+    case e: MouseDragged => if (interActiveLynx.isDefined) {
+      interActiveLynx.get.setXY(e.point.getX().toInt, e.point.getY().toInt)
+    }
+    case e: MouseReleased => releaseLynx() 
+    case _: FocusLost => repaint()
+  }
+
+  def releaseLynx() = {
+    if (interActiveLynx.isDefined){
+    	interActiveLynx.get.setContorlled(false)
+    	interActiveLynx = None
+    }
+  }
+  
+  def searchLynx(x: Int, y: Int): Option[Lynx] = {
+    val lynx:Option[Lynx] = _lynx.find(e => e.isOnThisPot(e.getX(), e.getY()))
+    if (lynx.isDefined){
+      lynx.get.setContorlled(true)
+    }
+    lynx
+  }
+  
+  def draw(h: Seq[Hare], l: Seq[Lynx]) = {
+    _hares = h
+    _lynx = l
     repaint()
   }
 
@@ -69,14 +98,20 @@ case class DataPanel(circles: Seq[Circle], square: Seq[Square]) extends Panel {
     g.fillRect(0, 0, 300, 300)
     g.setColor(color)
 
-    if (_circles != null) {
-      for (h <- _circles)
-        h.draw(g)
+    if (_hares != null) {
+      for (h <- _hares)
+        new Circle(h.getX(), h.getY(), Configure.HareSize, Configure.HareColor).draw(g)
       g.setColor(color)
     }
-    if (_squares != null) {
-      for (l <- _squares)
-        l.draw(g)
+    if (_lynx != null) {
+      for (l <- _lynx){
+        val c:Color = if (l.getContorlled()) Configure.LynxCtrolColor  else Configure.LynxColor 
+        new Square(l.getX(), l.getY(),
+            Configure.LynxSize, 
+            Configure.LynxSize, 
+            c
+            ).draw(g)
+      }
       g.setColor(color)
     }
   }

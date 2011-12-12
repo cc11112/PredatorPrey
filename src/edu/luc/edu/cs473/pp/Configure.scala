@@ -6,8 +6,9 @@ object Configure {
   val WorldWidth: Int = 300			//world space width
   val WorldHeight: Int = 300		//world space height
   
-  val HareColor: Color = Color.YELLOW
+  val HareColor: Color = Color.WHITE
   val LynxColor: Color = Color.RED
+  val LynxCtrolColor: Color = Color.BLUE
   
   val HareSize: Int = 5
   val LynxSize: Int = 10

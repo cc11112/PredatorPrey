@@ -44,12 +44,6 @@ case class Hare(
   private def getReproduceNumber(): Int = (math.random * hareReproduce).toInt
 
   /**
-   * Is this hare at this area
-   */
-  def isOnThisPot(x: Int, y: Int): Boolean =
-    WorldSpace.isInScope(x, y, getX(), getY())
-
-  /**
    * is dying coming?
    */
 

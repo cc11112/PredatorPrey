@@ -90,11 +90,8 @@ object WorldActor extends Actor {
 
     println("====Hares Population: " + h.toString())
     println("====Lynx Population: " + l.toString())
-
-    val hares = haresPopulation.map(h => new Circle(h.getX(), h.getY(), Configure.HareSize, Configure.HareColor))
-    val lynx = lynxPopulation.map(l => new Square(l.getX(), l.getY(), Configure.LynxSize, Configure.LynxSize, Configure.LynxColor))
-
-    WorldGUI.ShapeDrawingActor ! (hares, lynx)
+    
+    WorldGUI.ShapeDrawingActor ! (haresPopulation, lynxPopulation)
   }
 
   /**
