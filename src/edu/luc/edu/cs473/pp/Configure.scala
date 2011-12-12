@@ -17,5 +17,5 @@ object Configure {
   val InitialLynx: Int = 5
   
   val Runtime: Int = 100 
-  val DisplayMessage: Boolean = false
+  val DisplayMessage: Boolean = false //only to display debug message
 }

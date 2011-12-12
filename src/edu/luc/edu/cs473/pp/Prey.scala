@@ -26,6 +26,7 @@ case class Lynx(
           isDying()
         }
         case h: Hare => killHare(h) //got the hare
+        case (x: Int, y: Int) => setXY(x, y) //moveTo(x, y)
         case "die" => quit()
         case _ => displayMessage("Lynx:" + hashCode() + " got message. ")
       }
