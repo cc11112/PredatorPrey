@@ -50,7 +50,7 @@ object ClockActor extends Actor {
 
       WorldActor ! "ticker"
 
-      Thread.sleep(1000)
+      Thread.sleep(Configure.Ticker)
 
       ClockActor ! "ticker"
     }

@@ -2,7 +2,7 @@ package edu.luc.edu.cs473.pp
 
 import swing._
 import event._
-import java.awt.{ Color, Graphics }
+import java.awt.{ Color, Graphics, Cursor }
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -54,11 +54,12 @@ class Square(var x: Int, var y: Int, width: Int, height: Int, fillColor: Color) 
   def area: Double = width * height
 }
 
-case class DataPanel(hares: Seq[Hare], lynx: Seq[Lynx]) extends Panel {
+case class DataPanel(hares: Seq[Hare], lynx: Seq[Lynx]) extends BoxPanel(Orientation.Vertical){
   private var _hares = hares
   private var _lynx = lynx
   private var interActiveLynx: Option[Lynx] = None
 
+  cursor = new Cursor(Cursor.CROSSHAIR_CURSOR)
   focusable = true
   listenTo(mouse.clicks, mouse.moves, keys)
 
@@ -67,53 +68,70 @@ case class DataPanel(hares: Seq[Hare], lynx: Seq[Lynx]) extends Panel {
     case e: MouseDragged => if (interActiveLynx.isDefined) {
       interActiveLynx.get.setXY(e.point.getX().toInt, e.point.getY().toInt)
     }
-    case e: MouseReleased => releaseLynx() 
+    case e: MouseReleased => releaseLynx()
     case _: FocusLost => repaint()
   }
 
   def releaseLynx() = {
-    if (interActiveLynx.isDefined){
-    	interActiveLynx.get.setContorlled(false)
-    	interActiveLynx = None
+    if (interActiveLynx.isDefined) {
+      interActiveLynx.get.setContorlled(false)
+      interActiveLynx = None
     }
+    cursor = new Cursor(Cursor.CROSSHAIR_CURSOR)
   }
-  
+
   def searchLynx(x: Int, y: Int): Option[Lynx] = {
-    val lynx:Option[Lynx] = _lynx.find(e => e.isOnThisPot(e.getX(), e.getY()))
-    if (lynx.isDefined){
+    cursor = new Cursor(Cursor.HAND_CURSOR)
+    var lynx: Option[Lynx] = None
+    if (_lynx != null) {
+      lynx = _lynx.find(e => e.isOnThisPot(x, y))
+    }
+    if (lynx.isDefined) {
       lynx.get.setContorlled(true)
+      cursor = new Cursor(Cursor.MOVE_CURSOR)
     }
     lynx
   }
-  
+
   def draw(h: Seq[Hare], l: Seq[Lynx]) = {
     _hares = h
     _lynx = l
     repaint()
   }
 
+  def drawLyx(l: Lynx, g: Graphics2D) = {
+    val c: Color = if (l.getContorlled()) Configure.LynxCtrolColor else Configure.LynxColor
+    new Square(l.getX(), l.getY(), Configure.LynxSize, Configure.LynxSize, c).draw(g)
+  }
+
   override def paintComponent(g: Graphics2D) {
+    super.paintComponent(g)
+    //g.clearRect(0, 0, Configure.WorldWidth, Configure.WorldHeight + 30)
+
     val color: Color = g.getColor()
     g.setColor(Color.GRAY)
-    g.fillRect(0, 0, 300, 300)
+    g.fillRect(0, 0, Configure.WorldWidth, Configure.WorldHeight)
     g.setColor(color)
 
     if (_hares != null) {
       for (h <- _hares)
-        new Circle(h.getX(), h.getY(), Configure.HareSize, Configure.HareColor).draw(g)
-      g.setColor(color)
+        if (!h.getDying())
+        	new Circle(h.getX(), h.getY(), Configure.HareSize, Configure.HareColor).draw(g)
+      g.setColor(color)        	
+      g.drawString("Hares Population: " + _hares.count(e => !e.getDying()).toString(), 10, size.height - 60)
     }
     if (_lynx != null) {
-      for (l <- _lynx){
-        val c:Color = if (l.getContorlled()) Configure.LynxCtrolColor  else Configure.LynxColor 
-        new Square(l.getX(), l.getY(),
-            Configure.LynxSize, 
-            Configure.LynxSize, 
-            c
-            ).draw(g)
-      }
-      g.setColor(color)
+      for (l <- _lynx)
+        if (!l.getDying())
+        	drawLyx(l, g)
+      g.setColor(color)        	
+      g.drawString("Lynx Population: " + _lynx.count(e => !e.getDying()).toString(), 10, size.height - 45)
     }
+
+    //hint
+    g.drawString("Press left mouse button to catch one of lynx.", 10, size.height - 30)
+    if (interActiveLynx != None && interActiveLynx.isDefined)
+      g.drawString("Move mouse to move lynx.", 10, size.height - 15)
   }
 }
 

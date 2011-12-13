@@ -21,8 +21,7 @@ object WorldGUI extends SimpleSwingApplication {
   }
 
   val dataPanel = new DataPanel(null, null) {
-   
-    border = Swing.EmptyBorder(30, 100, Configure.WorldWidth, Configure.WorldHeight)
+    border = Swing.EmptyBorder(30, 30, Configure.WorldHeight + 60, Configure.WorldWidth + 60)
   }
 
   def top = new MainFrame {
@@ -42,6 +41,7 @@ object WorldGUI extends SimpleSwingApplication {
         WorldActor.run(true)
       }
     }
+
     val buttonStop = new Button {
       text = "Stop"
       action = Action("Stop") {
@@ -59,16 +59,16 @@ object WorldGUI extends SimpleSwingApplication {
 
       contents += imagePanel
       contents += dataPanel
-      contents += new ImagePanel(0, 1) {
-      }
 
-      val s = new Dimension(Configure.WorldWidth, Configure.WorldHeight + 100)
+      val s = new Dimension(Configure.WorldWidth + 100, Configure.WorldHeight + 150)
 
       minimumSize = s
       maximumSize = s
       preferredSize = s
     }
-
+    
+  //  preferredSize = new Dimension(Configure.WorldWidth + 300, Configure.WorldHeight + 350)
+    
     ShapeDrawingActor.start()
     centerOnScreen
     listenTo(this)

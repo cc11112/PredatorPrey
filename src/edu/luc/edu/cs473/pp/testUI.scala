@@ -7,6 +7,23 @@ import java.awt.{Color, Dimension, Graphics, Graphics2D, Point, geom}
 
 
 object LinePainting extends SimpleSwingApplication {
+   lazy val textPanel = new Panel {
+    private var text: String = "Press left mouse button and drag to paint."
+
+    background = Color.white
+    preferredSize = new Dimension(Configure.WorldWidth, 30)
+
+    def drawText(message: String) = {
+      text = message
+      repaint()
+    }
+
+    override def paintComponent(g: Graphics2D) = {
+      super.paintComponent(g)
+      g.drawString(text, 10, size.height - 10)
+    }
+  }
+   
   lazy val ui = new Panel {
     background = Color.white
     preferredSize = new Dimension(Configure.WorldWidth, Configure.WorldHeight)
