@@ -3,15 +3,15 @@ package edu.luc.edu.cs473.pp
 import java.awt.{Color}
 
 object Configure {
-  val WorldWidth: Int = 300			//world space width
-  val WorldHeight: Int = 300		//world space height
+  val WorldWidth: Int = 400			//world space width
+  val WorldHeight: Int = 400		//world space height
   
   val HareColor: Color = Color.WHITE	//color of hare
   val LynxColor: Color = Color.RED		//color of lynx
   val LynxCtrolColor: Color = Color.BLUE //color of lynx is manulled by person
   
-  val HareSize: Int = 5				//size of hare on UI
-  val LynxSize: Int = 10			//size of lynx on UI
+  val HareSize: Int = 6				//size of hare on UI
+  val LynxSize: Int = 12			//size of lynx on UI
   
   val ScopeRadius: Int = 8			//lynx hunt hare scope
   val HareRunStep: Int = 15			//every time hare step 
