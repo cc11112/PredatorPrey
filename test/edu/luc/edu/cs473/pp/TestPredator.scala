@@ -3,9 +3,19 @@ package edu.luc.edu.cs473.pp
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
+import org.scalatest._
 
 @RunWith(classOf[JUnitRunner])
-class TestPredator extends FunSuite {
+class TestPredator extends FunSuite with BeforeAndAfterAll {
+
+  override def beforeAll() {
+    TestSuit.lock(true)
+    WorldActor.reset()
+  }
+
+  override def afterAll() {
+    TestSuit.unlock()
+  }
 
   /**
    * Test Hare's age
@@ -31,12 +41,6 @@ class TestPredator extends FunSuite {
       assert(h.isOnThisPot(x, y) == result)
     }
   }
-
-  while (TestSuit.StartWorldActor) {
-    Thread.sleep(100)
-  }
-
-  TestSuit.StartWorldActor = true
 
   val h1: Hare = new Hare(
     0,
@@ -87,6 +91,4 @@ class TestPredator extends FunSuite {
   testScope("testIsInThisScope", h3, 100 + Configure.ScopeRadius / 2, 100 - Configure.ScopeRadius / 2, true)
 
   testScope("testIsOutThisScope", h3, 100 + Configure.ScopeRadius * 2, 100 - Configure.ScopeRadius / 2, false)
-
-  TestSuit.StartWorldActor = false
 }

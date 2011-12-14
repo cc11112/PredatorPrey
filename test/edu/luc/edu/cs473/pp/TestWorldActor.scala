@@ -3,10 +3,20 @@ package edu.luc.edu.cs473.pp
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
+import org.scalatest._
 
 @RunWith(classOf[JUnitRunner])
-class TestWorldActor extends FunSuite {
-  
+class TestWorldActor extends FunSuite with BeforeAndAfterAll {
+
+  override def beforeAll() {
+    TestSuit.lock(true)
+    WorldActor.reset()
+  }
+
+  override def afterAll() {
+    TestSuit.unlock()
+  }
+
   /**
    * Test world actor to handle hares
    */
@@ -14,7 +24,7 @@ class TestWorldActor extends FunSuite {
     test(description) {
       if (h != null) {
         WorldActor ! h
-        Thread.sleep(100)
+        Thread.sleep(200)
       }
       assert(WorldActor.getHaresCount() === result)
     }
@@ -60,13 +70,7 @@ class TestWorldActor extends FunSuite {
       assert(WorldActor.getHaresCount() === result)
     }
   }
-  
-  while (TestSuit.StartWorldActor){
-    Thread.sleep(100)
-  }
-  
-  TestSuit.StartWorldActor = true
-     
+
   WorldActor.reset()
   WorldActor.start()
 
@@ -90,6 +94,5 @@ class TestWorldActor extends FunSuite {
   //one of hares will be killed, so, only one is left
   testPositionofHare("test position of hare", h, l, 1)
 
-  TestSuit.StartWorldActor = false
 }
 

@@ -1,5 +1,16 @@
 package edu.luc.edu.cs473.pp
 
 object TestSuit {
-	var StartWorldActor: Boolean = false
+  private var StartWorldActor: Boolean = false
+  def lock(v: Boolean) = {
+    synchronized {
+      while (StartWorldActor) {
+        Thread.sleep(100)
+      }
+      StartWorldActor = v
+    }
+  }
+  def unlock() = {
+    StartWorldActor = false
+  }
 }
