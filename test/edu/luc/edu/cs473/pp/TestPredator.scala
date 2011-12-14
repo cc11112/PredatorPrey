@@ -32,6 +32,12 @@ class TestPredator extends FunSuite {
     }
   }
 
+  while (TestSuit.StartWorldActor) {
+    Thread.sleep(100)
+  }
+
+  TestSuit.StartWorldActor = true
+
   val h1: Hare = new Hare(
     0,
     Configure.HareMaxAge,
@@ -39,8 +45,7 @@ class TestPredator extends FunSuite {
     Configure.HareReproduce,
     -1,
     -1,
-    Configure.HareRunStep
-    )
+    Configure.HareRunStep)
   h1.start()
 
   /**
@@ -80,7 +85,8 @@ class TestPredator extends FunSuite {
     Configure.HareRunStep)
 
   testScope("testIsInThisScope", h3, 100 + Configure.ScopeRadius / 2, 100 - Configure.ScopeRadius / 2, true)
-  
+
   testScope("testIsOutThisScope", h3, 100 + Configure.ScopeRadius * 2, 100 - Configure.ScopeRadius / 2, false)
 
+  TestSuit.StartWorldActor = false
 }

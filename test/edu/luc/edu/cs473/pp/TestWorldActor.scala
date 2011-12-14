@@ -6,7 +6,7 @@ import org.scalatest.FunSuite
 
 @RunWith(classOf[JUnitRunner])
 class TestWorldActor extends FunSuite {
-
+  
   /**
    * Test world actor to handle hares
    */
@@ -40,7 +40,7 @@ class TestWorldActor extends FunSuite {
     test(description) {
 
       WorldActor ! message
-      
+
       Thread.sleep(200)
 
       assert(WorldActor.getLynxCount() === lynx)
@@ -52,7 +52,7 @@ class TestWorldActor extends FunSuite {
     test(description) {
 
       val e = lynx.getEnergy()
-      lynx ! (hare.getX() + Configure.ScopeRadius / 2, hare.getY() - Configure.ScopeRadius / 2 )
+      lynx ! (hare.getX() + Configure.ScopeRadius / 2, hare.getY() - Configure.ScopeRadius / 2)
       WorldActor ! ("whereishare", lynx)
       Thread.sleep(100)
       //lynx should got the hare
@@ -60,7 +60,13 @@ class TestWorldActor extends FunSuite {
       assert(WorldActor.getHaresCount() === result)
     }
   }
-
+  
+  while (TestSuit.StartWorldActor){
+    Thread.sleep(100)
+  }
+  
+  TestSuit.StartWorldActor = true
+     
   WorldActor.reset()
   WorldActor.start()
 
@@ -79,10 +85,11 @@ class TestWorldActor extends FunSuite {
   testLynx("test another new born kitten:",
     new Lynx(Configure.LynxMaxAge, Configure.LynxMaxAge, Configure.EnergyUseReproduce, Configure.EnergyGainPreHare, Configure.EnergyUseReproduce, 0, 0, Configure.LynxRunStep),
     2)
-  
+
   //test position has hare
   //one of hares will be killed, so, only one is left
   testPositionofHare("test position of hare", h, l, 1)
 
+  TestSuit.StartWorldActor = false
 }
 
