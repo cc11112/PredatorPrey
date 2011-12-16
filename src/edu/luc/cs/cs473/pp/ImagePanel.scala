@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import swing._
 import event._
@@ -84,7 +84,7 @@ case class DataPanel(hares: Seq[Hare], lynx: Seq[Lynx]) extends BoxPanel(Orienta
     cursor = new Cursor(Cursor.HAND_CURSOR)
     var lynx: Option[Lynx] = None
     if (_lynx != null) {
-      lynx = _lynx.find(e => e.isOnThisPot(x, y))
+      lynx = _lynx.find(e => e.isOnThisPot(x, y, Configure.LynxScopeRadius))
     }
     if (lynx.isDefined) {
       lynx.get.setContorlled(true)

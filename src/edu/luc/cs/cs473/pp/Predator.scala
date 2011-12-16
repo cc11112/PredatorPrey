@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import scala.actors._
 
@@ -22,7 +22,7 @@ case class Hare(
           isDying()
         }
         case "die" => quit()
-        case x: Any => displayMessage("Error! Hare:" + hashCode() + " got message:" + x)
+        case x: Any => displayMessage("Warning! Hare:" + hashCode() + " got message:" + x)
       }
     }
   }

@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import scala.actors.Actor
 import scala.actors.Actor._

@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -38,7 +38,7 @@ class TestPredator extends FunSuite with BeforeAndAfterAll {
    */
   def testScope(description: String, h: Hare, x: Int, y: Int, result: Boolean) = {
     test(description) {
-      assert(h.isOnThisPot(x, y) == result)
+      assert(h.isOnThisPot(x, y, Configure.HareScopeRadius) == result)
     }
   }
 
@@ -88,7 +88,7 @@ class TestPredator extends FunSuite with BeforeAndAfterAll {
     100,
     Configure.HareRunStep)
 
-  testScope("testIsInThisScope", h3, 100 + Configure.ScopeRadius / 2, 100 - Configure.ScopeRadius / 2, true)
+  testScope("testIsInThisScope", h3, 100 + Configure.HareScopeRadius / 2, 100 - Configure.HareScopeRadius / 2, true)
 
-  testScope("testIsOutThisScope", h3, 100 + Configure.ScopeRadius * 2, 100 - Configure.ScopeRadius / 2, false)
+  testScope("testIsOutThisScope", h3, 100 + Configure.HareScopeRadius * 2, 100 - Configure.HareScopeRadius * 2, false)
 }

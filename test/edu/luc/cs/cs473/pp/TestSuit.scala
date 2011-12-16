@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 object TestSuit {
   private var StartWorldActor: Boolean = false

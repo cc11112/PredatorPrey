@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import scala.actors._
 import scala.collection.mutable.ListBuffer
@@ -15,7 +15,7 @@ object WorldActor extends Actor {
         case "ticker" => simlulate()
         case ("whereishare", l: Lynx) => searchHaresForLynx(l)
         case "exit" => quit()
-        case x: Any => displayMessage("Error: Unknown message! " + x)
+        case x: Any => displayMessage("Warning! Unknown message! " + x)
       }
     }
   }
@@ -56,7 +56,7 @@ object WorldActor extends Actor {
    * search hares for lynx
    */
   private def searchHaresForLynx(lynx: Lynx): Option[Hare] = {
-    val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY()))
+    val hare = haresPopulation.find(e => e.isOnThisPot(lynx.getX(), lynx.getY(), Configure.HareScopeRadius))
     if (!hare.isEmpty && !lynx.getDying()) {
       haresPopulation -= hare.get
       lynx ! hare.get

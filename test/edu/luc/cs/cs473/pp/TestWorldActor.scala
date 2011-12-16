@@ -1,9 +1,10 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import org.scalatest._
+
 
 @RunWith(classOf[JUnitRunner])
 class TestWorldActor extends FunSuite with BeforeAndAfterAll {
@@ -62,7 +63,7 @@ class TestWorldActor extends FunSuite with BeforeAndAfterAll {
     test(description) {
 
       val e = lynx.getEnergy()
-      lynx ! (hare.getX() + Configure.ScopeRadius / 2, hare.getY() - Configure.ScopeRadius / 2)
+      lynx ! (hare.getX() + Configure.HareScopeRadius / 2, hare.getY() - Configure.HareScopeRadius / 2)
       WorldActor ! ("whereishare", lynx)
       Thread.sleep(100)
       //lynx should got the hare

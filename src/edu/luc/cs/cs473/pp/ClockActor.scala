@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import scala.actors._
 
@@ -10,7 +10,7 @@ object ClockActor extends Actor {
         case "stop" => reply(Stop())
         case "ticker" => reply(Ticker())
         case "exit" => exit() 
-        case x: Any => println("Error: clock message! " + x)
+        case x: Any => println("Warning! clock got message: " + x)
       }
     }
   }

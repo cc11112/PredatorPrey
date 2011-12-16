@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import scala.swing._
 import event._
@@ -14,7 +14,7 @@ object WorldGUI extends SimpleSwingApplication {
         receive {
           case (hares: Seq[Hare], lynx: Seq[Lynx]) => dataPanel.draw(hares, lynx)
           case "exit" => println("exiting..."); exit
-          case x: Any => println("Error: Unknown message! " + x)
+          case x: Any => println("Warning: Unknown message! " + x)
         }
       }
     }

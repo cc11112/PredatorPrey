@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import scala.actors._
 
@@ -32,8 +32,8 @@ abstract class PredatorPreyAgent(age: Int, maxAge: Int, startX: Int, startY: Int
   /**
    * Is this agent at this area
    */
-  def isOnThisPot(x: Int, y: Int): Boolean =
-    WorldSpace.isInScope(x, y, getX(), getY())
+  def isOnThisPot(x: Int, y: Int, scopeRadius: Int): Boolean =
+    WorldSpace.isInScope(x, y, getX(), getY(), scopeRadius)
 
   /**
    * quit this world

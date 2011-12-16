@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 import java.awt.{Color}
 
@@ -13,7 +13,8 @@ object Configure {
   val HareSize: Int = 6				//size of hare on UI
   val LynxSize: Int = 12			//size of lynx on UI
   
-  val ScopeRadius: Int = 8			//lynx hunt hare scope
+  val HareScopeRadius: Int = 10		//lynx hunt hare scope
+  val LynxScopeRadius: Int = 25		//lynx hunt hare scope
   val HareRunStep: Int = 15			//every time hare step 
   val LynxRunStep: Int = 26			//every time lynx step
   

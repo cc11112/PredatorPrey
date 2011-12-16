@@ -1,4 +1,4 @@
-package edu.luc.edu.cs473.pp
+package edu.luc.cs.cs473.pp
 
 object WorldSpace {
   def getRandomX(): Int = (math.random * Configure.WorldWidth).toInt
@@ -41,9 +41,9 @@ object WorldSpace {
   /**
    * Check hare(x,y) is in lynx spot(xx,yy)
    */
-  def isInScope(xx: Int, yy: Int, x: Int, y: Int): Boolean =
-    (xx - Configure.ScopeRadius <= x && x <= xx + Configure.ScopeRadius
-      && yy - Configure.ScopeRadius <= y && y <= yy + Configure.ScopeRadius)
+  def isInScope(xx: Int, yy: Int, x: Int, y: Int, scopeRadius: Int): Boolean =
+    (xx - scopeRadius <= x && x <= xx + scopeRadius
+      && yy - scopeRadius <= y && y <= yy + scopeRadius)
 }
 
 
